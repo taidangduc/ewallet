@@ -1,0 +1,6 @@
+@EWallet.Gateways.WebAPI_HostAddress = http://localhost:5038
+
+GET {{EWallet.Gateways.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/BuildingBlocks/">
+    <Project Path="src/BuildingBlocks/EWallet.Common/EWallet.Common.csproj" />
+    <Project Path="src/BuildingBlocks/EWallet.Contracts/EWallet.Contracts.csproj" />
+  </Folder>
+  <Folder Name="/src/Gateways/">
+    <Project Path="src/Gateways/EWallet.Gateways.WebAPI/EWallet.Gateways.WebAPI.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/" />
+  <Folder Name="/src/Services/Identity/">
+    <Project Path="src/Services/Identity/EWallet.Identity.UnitTests/EWallet.Identity.UnitTests.csproj" />
+    <Project Path="src/Services/Identity/EWallet.Identity/EWallet.Identity.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/Wallet/">
+    <Project Path="src/Services/Wallet/EWallet.Wallet.UnitTests/EWallet.Wallet.UnitTests.csproj" />
+    <Project Path="src/Services/Wallet/EWallet.Wallet/EWallet.Wallet.csproj" />
+  </Folder>
+</Solution>
