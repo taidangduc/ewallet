@@ -1,0 +1,1 @@
+dotnet ef migrations add Initial_Wallet -p src\Services\Wallet\EWallet.Wallet -c WalletDbContext -o Migrations

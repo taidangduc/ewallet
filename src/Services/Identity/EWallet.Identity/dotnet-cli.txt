@@ -1,0 +1,1 @@
+dotnet ef migrations add Initial_Identity -p src\Services\Identity\EWallet.Identity -c IdentityDbContext -o Migrations

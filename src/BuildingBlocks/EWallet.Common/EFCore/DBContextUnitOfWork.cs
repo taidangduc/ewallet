@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EWallet.Common.EFCore;
 
-public class DbContextUnitOfWork : DbContext, IUnitOfWork
+public class DbContextUnitOfWork<TDbContext> : DbContext, IUnitOfWork
+    where TDbContext : DbContext
 {
     private IDbContextTransaction _transaction;
-    
-    public DbContextUnitOfWork(DbContextOptions options) : base(options)
+
+    public DbContextUnitOfWork(DbContextOptions<TDbContext> options) : base(options)
     {
     }
 
@@ -25,9 +26,9 @@ public class DbContextUnitOfWork : DbContext, IUnitOfWork
     }
     public async Task<IDisposable> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
-       _transaction = await Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted, cancellationToken);
+        _transaction = await Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted, cancellationToken);
 
-       return _transaction;
+        return _transaction;
     }
 
     public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)

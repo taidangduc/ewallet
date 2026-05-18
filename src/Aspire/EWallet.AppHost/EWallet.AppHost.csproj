@@ -1,0 +1,16 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.3.3">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>987fb7c7-162a-48e3-91bf-920c50483787</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Identity\EWallet.Identity\EWallet.Identity.csproj" />
+    <ProjectReference Include="..\..\Services\Wallet\EWallet.Wallet\EWallet.Wallet.csproj" />
+  </ItemGroup>
+
+</Project>

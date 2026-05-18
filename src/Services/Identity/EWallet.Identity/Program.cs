@@ -1,44 +1,67 @@
-var builder = WebApplication.CreateBuilder(args);
+using EWallet.Contracts;
+using EWallet.Identity.ConfigurationOptions;
+using EWallet.Identity.Data;
+using EWallet.Identity.Entities;
+using EWallet.Identity.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
+
+var appSettings = new AppSettings();
+configuration.Bind(appSettings);
+
+services.Configure<AppSettings>(configuration);
+
+services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(appSettings.ConnectionStrings.DefaultConnection));
+
+services.AddIdentity<User, IdentityRole<Guid>>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+})
+.AddEntityFrameworkStores<IdentityDbContext>()
+.AddDefaultTokenProviders();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllers();
+
+services.AddScoped<IdentityDbContextSeed>();
+
+// Configure HttpClient
+services.AddHttpClient<IWalletService, WalletService>(options =>
+{
+    options.BaseAddress = new Uri(appSettings.Services.Wallet.BaseUrl);
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Configure Swagger
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "EWallet.Identity API V1");
+    options.RoutePrefix = "swagger";
+});
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
-var summaries = new[]
+// Seed data
+using (var scope = app.Services.CreateScope())
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var database = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+    await database.Database.MigrateAsync();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    var seeder = scope.ServiceProvider.GetRequiredService<IdentityDbContextSeed>();
+    await seeder.SeedAsync();
+}
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

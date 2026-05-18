@@ -1,5 +1,9 @@
 <Solution>
   <Folder Name="/src/" />
+  <Folder Name="/src/Aspire/">
+    <Project Path="src/Aspire/EWallet.AppHost/EWallet.AppHost.csproj" />
+    <Project Path="src/Aspire/EWallet.ServiceDefaults/EWallet.ServiceDefaults.csproj" />
+  </Folder>
   <Folder Name="/src/BuildingBlocks/">
     <Project Path="src/BuildingBlocks/EWallet.Common/EWallet.Common.csproj" />
     <Project Path="src/BuildingBlocks/EWallet.Contracts/EWallet.Contracts.csproj" />

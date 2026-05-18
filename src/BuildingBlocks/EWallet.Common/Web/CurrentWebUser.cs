@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+
 namespace EWallet.Common.Web;
 
 public interface ICurrentWebUser
@@ -9,21 +11,28 @@ public interface ICurrentWebUser
 
 public class CurrentWebUser : ICurrentWebUser
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IHttpContextAccessor _context;
 
-    public CurrentWebUser(IHttpContextAccessor httpContextAccessor)
+    public CurrentWebUser(IHttpContextAccessor context)
     {
-        _httpContextAccessor = httpContextAccessor;
+        _context = context;
     }
 
     public Guid UserId
     {
         get
         {
-            var userId = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value;
-            return userId != null ? Guid.Parse(userId) : Guid.Empty;
+            var userId = _context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? _context.HttpContext.User.FindFirst("sub")?.Value;
+            return Guid.Parse(userId);
         }
     }
 
-    public bool IsAuthenticated => _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
+    public bool IsAuthenticated
+    {
+        get
+        {
+            return _context.HttpContext.User.Identity.IsAuthenticated;
+        }
+    }
 }
