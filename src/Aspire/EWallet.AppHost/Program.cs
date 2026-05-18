@@ -1,6 +1,6 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddProject<Projects.EWallet_Wallet>("wallet");
-builder.AddProject<Projects.EWallet_Identity>("identity");
+var wallerService = builder.AddProject<Projects.EWallet_Wallet>("wallet");
+builder.AddProject<Projects.EWallet_Identity>("identity").WaitFor(wallerService);
 
 builder.Build().Run();
