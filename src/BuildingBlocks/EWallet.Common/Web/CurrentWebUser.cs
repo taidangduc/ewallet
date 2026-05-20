@@ -24,7 +24,7 @@ public class CurrentWebUser : ICurrentWebUser
         {
             var userId = _context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
                 ?? _context.HttpContext.User.FindFirst("sub")?.Value;
-            return Guid.Parse(userId);
+            return string.IsNullOrEmpty(userId) ? Guid.Empty : Guid.Parse(userId);
         }
     }
 

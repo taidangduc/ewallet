@@ -6,6 +6,7 @@ namespace EWallet.Identity.Services;
 public class WalletService : IWalletService
 {
     private readonly HttpClient _httpClient;
+    
 
     public WalletService(HttpClient httpClient)
     {

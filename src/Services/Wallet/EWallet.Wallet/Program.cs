@@ -31,7 +31,6 @@ services.AddCors(options =>
 });
 
 // Database
-//builder.AddCustomDbContext<WalletDbContext>(appSettings.ConnectionStrings.DefaultConnection);
 services.AddDbContext<WalletDbContext>(options => options.UseSqlServer(appSettings.ConnectionStrings.DefaultConnection));
 
 // Configure services
@@ -41,12 +40,12 @@ services.AddScoped<IWalletRepository, WalletRepository>();
 services.AddScoped<IRepository<Wallet>, Repository<Wallet>>();
 services.AddScoped<IRepository<Transaction>, Repository<Transaction>>();
 
+services.AddScoped<WalletService>();
 services.AddScoped<IWalletService, WalletService>();
 services.AddScoped<ITransactionService, TransactionService>();
 services.AddScoped<IPaymentGateway, PaymentGateway>();
 
 services.AddHttpContextAccessor();
-
 services.AddScoped<ICurrentWebUser, CurrentWebUser>();
 
 services.AddExceptionHandler<GlobalExceptionHandler>();

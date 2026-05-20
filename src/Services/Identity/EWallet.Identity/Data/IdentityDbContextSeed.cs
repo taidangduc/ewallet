@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using EWallet.Contracts;
 using EWallet.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -63,6 +64,7 @@ public class IdentityDbContextSeed
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(_users.First(), Authorization.Roles.Admin);
+                    await _userManager.AddClaimAsync(_users.First(), new Claim("permission", Authorization.Permissions.All));
                     await _walletService.CreateWalletAsync(new CreateWalletModel
                     {
                         UserId = _users.First().Id,
@@ -76,6 +78,11 @@ public class IdentityDbContextSeed
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(_users.Last(), Authorization.Roles.User);
+                    await _userManager.AddClaimsAsync(_users.Last(), new[]
+                    {
+                        new Claim("permission", Authorization.Permissions.Read),
+                        new Claim("permission", Authorization.Permissions.Write),
+                    });
                     await _walletService.CreateWalletAsync(new CreateWalletModel
                     {
                         UserId = _users.Last().Id,

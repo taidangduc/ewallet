@@ -1,0 +1,52 @@
+{
+    "Routes": 
+    [
+        {
+            "UpstreamPathTemplate": "/api/Authentication/{everything}",
+            "UpstreamHttpMethod": [ "Get", "Post" ],
+            "DownstreamScheme": "http",
+            "DownstreamPathTemplate": "/api/Authentication/{everything}",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
+            ]
+        },
+        {
+            "UpstreamPathTemplate": "/api/Wallet/{everything}",
+            "UpstreamHttpMethod": [ "Get", "Post" ],
+            "DownstreamScheme": "http",
+            "DownstreamPathTemplate": "/api/Wallet/{everything}",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": ["Write", "Read", "All"]
+            }    
+        },
+        {
+            "UpstreamPathTemplate": "/api/Transaction/{everything}",
+            "UpstreamHttpMethod": [ "Get", "Post" ],
+            "DownstreamScheme": "http",
+            "DownstreamPathTemplate": "/api/Transaction/{everything}",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": ["Write", "Read", "All"]
+            }    
+        }
+    ],
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:5000"
+    }
+}
