@@ -19,7 +19,7 @@ public class WalletController : ControllerBase
         _currentWebUser = currentWebUser;
     }
 
-    [HttpGet]
+    [HttpGet, Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get()
@@ -36,7 +36,7 @@ public class WalletController : ControllerBase
         return Ok(wallet);
     }
 
-    [HttpPost]
+    [HttpPost, Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Create([FromBody] CreateWalletModel model)

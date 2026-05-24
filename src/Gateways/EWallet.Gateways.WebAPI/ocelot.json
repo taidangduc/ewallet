@@ -9,9 +9,12 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 5002
+                    "Port": 6002
                 }
-            ]
+            ],
+            "AuthenticationOptions":{
+                "AuthenticationProviderKey":"Bearer"
+            }
         },
         {
             "UpstreamPathTemplate": "/api/Wallet/{everything}",
@@ -21,12 +24,12 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 5001
+                    "Port": 6001
                 }
             ],
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer",
-                "AllowedScopes": ["Write", "Read", "All"]
+                "AllowedScopes": ["write", "read", "all"]
             }    
         },
         {
@@ -37,16 +40,16 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 5001
+                    "Port": 6001
                 }
             ],
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer",
-                "AllowedScopes": ["Write", "Read", "All"]
+                "AllowedScopes": ["write", "read", "all"]
             }    
         }
     ],
     "GlobalConfiguration": {
-        "BaseUrl": "http://localhost:5000"
+        "BaseUrl": "http://localhost:6000"
     }
 }

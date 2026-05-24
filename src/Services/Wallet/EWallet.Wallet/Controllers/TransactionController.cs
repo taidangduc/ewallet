@@ -1,4 +1,7 @@
+using EWallet.Common.Web;
 using EWallet.Wallet.Models;
+using EWallet.Wallet.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EWallet.Wallet.Controllers;
@@ -7,27 +10,38 @@ namespace EWallet.Wallet.Controllers;
 [Route("api/[controller]")]
 public class TransactionController : ControllerBase
 {
-    [HttpGet]
+    private readonly ICurrentWebUser _currentWebUser;
+    private readonly TransactionService _transactionService;
+    public TransactionController(ICurrentWebUser currentWebUser, TransactionService transactionService)
+    {
+        _currentWebUser = currentWebUser;
+        _transactionService = transactionService;
+    }
+
+    [HttpGet, Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public Task<IActionResult> Get()
+    public async Task<IActionResult> Get()
     {
-        return Task.FromResult<IActionResult>(Ok(new { Transactions = new string[] { "Transaction1", "Transaction2" } }));
+        var userId = _currentWebUser.UserId;
+        var transactions = await _transactionService.GetTransactionsAsync(userId);
+        return Ok(transactions);
     }
 
     // NOTE:
     // You can separate 2 endpoints "Deposit" "+" and "Withdraw" "-"
     // Here, with demo purpose, I just use one endpoint for both operations
-    [HttpPost]
+    [HttpPost, Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public Task<IActionResult> Update([FromBody] TransactionModel request)
+    public async Task<IActionResult> Create([FromBody] TransactionModel request)
     {
         if (request.Amount <= 0)
         {
-            return Task.FromResult<IActionResult>(BadRequest("Amount must be greater than zero."));
+            return BadRequest("Amount must be greater than zero.");
         }
 
-        return Task.FromResult<IActionResult>(Ok(new { Message = "Transaction processed successfully." }));
+        await _transactionService.CreateTransactionAsync(request);
+        return Ok(new { Message = "Transaction processed successfully." });
     }
 }

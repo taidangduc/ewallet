@@ -1,3 +1,6 @@
+
+using static EWallet.Common.Web.JwtAuthentication;
+
 namespace EWallet.Identity.ConfigurationOptions;
 
 public class AppSettings

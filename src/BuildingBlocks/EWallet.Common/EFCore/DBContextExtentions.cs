@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 namespace EWallet.Common.EFCore;
@@ -12,9 +11,14 @@ public static class DBContextExtensions
         Action<IHostApplicationBuilder>? action = null
     ) where TDbContext : DbContext
     {
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new InvalidOperationException($"Connection string '{connectionString}' is not found.");
+        }
+
         builder.Services.AddDbContext<TDbContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString(connectionString));
+            options.UseSqlServer(connectionString);
         });
 
         action?.Invoke(builder);

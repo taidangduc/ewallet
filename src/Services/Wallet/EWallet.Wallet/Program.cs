@@ -22,25 +22,31 @@ services.Configure<AppSettings>(configuration);
 // CORS
 services.AddCors(options =>
 {
-    options.AddPolicy("AllowOrigins", policy =>
-    {
-        policy.WithOrigins(appSettings.CORS.AllowedOrigins)
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
+    options.AddPolicy("AllowOrigins", builder => builder
+        .WithOrigins(appSettings.CORS.AllowedOrigins)
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+
+    options.AddPolicy("AllowOrigin", builder => builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 });
 
-// Database
-services.AddDbContext<WalletDbContext>(options => options.UseSqlServer(appSettings.ConnectionStrings.DefaultConnection));
+// Authentication
+services.AddCustomJwtAuthentication(appSettings.Jwt);
 
-// Configure services
-services.AddScoped<IUnitOfWork, DbContextUnitOfWork<WalletDbContext>>();
+// Database
+builder.AddCustomDbContext<WalletDbContext>(appSettings.ConnectionStrings.DefaultConnection);
+
+// Configure DI
+services.AddScoped<IUnitOfWork, WalletDbContext>();
 services.AddScoped<ITransactionRepository, TransactionRepository>();
 services.AddScoped<IWalletRepository, WalletRepository>();
 services.AddScoped<IRepository<Wallet>, Repository<Wallet>>();
 services.AddScoped<IRepository<Transaction>, Repository<Transaction>>();
-
 services.AddScoped<WalletService>();
+services.AddScoped<TransactionService>();
 services.AddScoped<IWalletService, WalletService>();
 services.AddScoped<ITransactionService, TransactionService>();
 services.AddScoped<IPaymentGateway, PaymentGateway>();
@@ -53,23 +59,19 @@ services.AddProblemDetails();
 
 builder.Services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddSwaggerDocumentation("EWallet", "v1");
 
 var app = builder.Build();
 
-app.UseCors("AllowOrigins");
+app.UseCors(appSettings.CORS.AllowAnyOrigin ? "AllowOrigin" : "AllowOrigins");
 
-app.UseSwagger();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "EWallet API V1");
-    options.RoutePrefix = "swagger";
-});
+app.UseSwaggerDocumentation("EWallet", "v1");
 
 app.UseExceptionHandler();
+
 app.MapControllers();
 
+// Migrate database
 using (var scope = app.Services.CreateScope())
 {
     var database = scope.ServiceProvider.GetRequiredService<WalletDbContext>();

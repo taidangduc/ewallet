@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Services\Identity\EWallet.Identity\EWallet.Identity.csproj" />
     <ProjectReference Include="..\..\Services\Wallet\EWallet.Wallet\EWallet.Wallet.csproj" />
+    <ProjectReference Include="..\..\Gateways\EWallet.Gateways.WebAPI\EWallet.Gateways.WebAPI.csproj" />
   </ItemGroup>
 
 </Project>

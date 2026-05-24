@@ -28,7 +28,7 @@ public class TransactionService : ITransactionService
         _paymentGateway = paymentGateway;
     }
 
-    public async Task<List<TransactionDTO>> GetTransactions(Guid walletId)
+    public async Task<List<TransactionDTO>> GetTransactionsAsync(Guid walletId)
     {
         var transactions = await _transactionRepository.GetQueryable()
             .Where(x => x.WalletId == walletId)
