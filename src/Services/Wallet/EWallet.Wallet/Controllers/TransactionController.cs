@@ -11,8 +11,8 @@ namespace EWallet.Wallet.Controllers;
 public class TransactionController : ControllerBase
 {
     private readonly ICurrentWebUser _currentWebUser;
-    private readonly TransactionService _transactionService;
-    public TransactionController(ICurrentWebUser currentWebUser, TransactionService transactionService)
+    private readonly ITransactionService _transactionService;
+    public TransactionController(ICurrentWebUser currentWebUser, ITransactionService transactionService)
     {
         _currentWebUser = currentWebUser;
         _transactionService = transactionService;
