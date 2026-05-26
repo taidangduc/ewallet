@@ -1,3 +1,4 @@
+using EWallet.Common.Exceptions;
 using EWallet.Contracts;
 using EWallet.Wallet.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,12 @@ public class WalletService : IWalletService
     // Here I set the default currency to "USD", you can change it.
     public async Task CreateWalletAsync(CreateWalletModel model)
     {
+        var existingWallet = await _walletRepository.GetQueryable().AnyAsync(x => x.UserId == model.UserId);
+        if (existingWallet)
+        {
+            throw new ValidationException($"Wallet for user {model.UserId} already exists.");
+        }
+
         var wallet = new Entities.Wallet
         {
             Id = Guid.NewGuid(),
