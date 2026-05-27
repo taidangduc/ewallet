@@ -30,7 +30,7 @@ public class AuthenticationController : ControllerBase
         return Ok("Authenticated");
     }
 
-    [HttpPost]
+    [HttpPost, AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginModel request)
     {
         var user = await _userManager.FindByNameAsync(request.Username);
@@ -45,7 +45,7 @@ public class AuthenticationController : ControllerBase
             return Unauthorized();
         }
         var authenticationModel = await _identityService.AuthenticateAsync(request);
-        
+
         return Ok(authenticationModel);
     }
 }

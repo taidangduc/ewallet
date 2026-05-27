@@ -40,6 +40,7 @@ builder.Services.AddControllers();
 // Configure DI
 services.AddScoped<IdentityDbContextSeed>();
 services.AddScoped<IIdentityService, IdentityService>();
+services.AddScoped<IJwtProvider, JwtProvider>();
 
 // Configure HttpClient
 services.AddHttpClient<IWalletService, WalletService>(options =>

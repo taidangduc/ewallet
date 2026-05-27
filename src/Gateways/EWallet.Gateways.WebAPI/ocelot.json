@@ -1,9 +1,9 @@
 {
     "Routes": 
-    [
+    [      
         {
             "UpstreamPathTemplate": "/api/Authentication/{everything}",
-            "UpstreamHttpMethod": [ "Get", "Post" ],
+            "UpstreamHttpMethod": [ "Get" ],
             "DownstreamScheme": "http",
             "DownstreamPathTemplate": "/api/Authentication/{everything}",
             "DownstreamHostAndPorts": [
@@ -15,6 +15,18 @@
             "AuthenticationOptions":{
                 "AuthenticationProviderKey":"Bearer"
             }
+        },
+        {
+            "UpstreamPathTemplate": "/api/Authentication/{everything}",
+            "UpstreamHttpMethod": [ "Post" ],
+            "DownstreamScheme": "http",
+            "DownstreamPathTemplate": "/api/Authentication/{everything}",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 6002
+                }
+            ]
         },
         {
             "UpstreamPathTemplate": "/api/Wallet/{everything}",
