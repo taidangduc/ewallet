@@ -36,7 +36,6 @@ public class AuthenticationControllerTests
     }
 
     [Fact]
-
     public async Task Login_WhenUserValid_ShouldReturnToken()
     {
         // Arrange
