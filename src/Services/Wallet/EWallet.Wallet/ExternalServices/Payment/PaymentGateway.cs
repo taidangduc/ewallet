@@ -6,11 +6,13 @@ public class PaymentGateway : IPaymentGateway
     [
         new()
         {
+            Id = "token_98765abcdef",
             CardNumber = "4242424242424242",
             Status = PaymentStatus.Success
         },
         new()
         {
+            Id = "token_12345abcdef",
             CardNumber = "4000000000000002",
             Status = PaymentStatus.Failed
         }

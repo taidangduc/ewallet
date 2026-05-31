@@ -1,5 +1,6 @@
 using EWallet.Common.Exceptions;
 using EWallet.Contracts;
+using EWallet.Wallet.Controllers;
 using EWallet.Wallet.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,8 +39,14 @@ public class WalletService : IWalletService
         await _walletRepository.UnitOfWork.SaveChangesAsync();
     }
 
-    public Task<Entities.Wallet?> GetWalletAsync(Guid userId)
+    public Task<WalletDTO?> GetWalletAsync(Guid userId)
     {
-        return _walletRepository.GetQueryable().FirstOrDefaultAsync(x => x.UserId == userId);
+        return _walletRepository.GetQueryable().Select(x => new WalletDTO
+        {
+            Id = x.Id,
+            UserId = x.UserId,
+            Balance = x.Balance,
+            Currency = x.Currency,
+        }).FirstOrDefaultAsync(x => x.UserId == userId);
     }
 }
