@@ -35,6 +35,7 @@ services.AddCors(options =>
 
 // Authentication
 services.AddCustomJwtAuthentication(appSettings.Jwt);
+services.AddAuthorization();
 
 // Database
 builder.AddCustomDbContext<WalletDbContext>(appSettings.ConnectionStrings.DefaultConnection);
@@ -67,7 +68,8 @@ app.UseCors(appSettings.CORS.AllowAnyOrigin ? "AllowOrigin" : "AllowOrigins");
 app.UseSwaggerDocumentation("EWallet", "v1");
 
 app.UseExceptionHandler();
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 // Migrate database

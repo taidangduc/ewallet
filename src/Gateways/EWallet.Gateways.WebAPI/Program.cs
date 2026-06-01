@@ -13,10 +13,6 @@ var appSettings = new AppSettings();
 configuration.Bind(appSettings);
 services.Configure<AppSettings>(configuration);
 
-// Ocelot
-builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
-builder.Services.AddOcelot(builder.Configuration);
-
 // CORS
 services.AddCors(options =>
 {
@@ -33,6 +29,11 @@ services.AddCors(options =>
 
 // Authentication
 builder.Services.AddCustomJwtAuthentication(appSettings.Jwt);
+builder.Services.AddAuthorization();
+
+// Ocelot
+builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+builder.Services.AddOcelot(builder.Configuration);
 
 var app = builder.Build();
 
