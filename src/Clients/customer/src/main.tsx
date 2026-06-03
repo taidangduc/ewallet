@@ -6,11 +6,12 @@ import { HomePage } from "./pages/Home.tsx";
 import { NotFoundPage } from "./pages/NotFound.tsx";
 import { createBrowserRouter } from "react-router-dom";
 import { LoginPage } from "./pages/Login.tsx";
+import { AuthGuard } from "./features/auth/AuthGuard.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <AuthGuard><HomePage /></AuthGuard>,
   },
   {
     path: "/login",

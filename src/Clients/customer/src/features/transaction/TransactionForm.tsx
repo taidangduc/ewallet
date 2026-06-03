@@ -1,8 +1,9 @@
 import React from "react";
 import { TransactionAmount } from "./TransactionAmount";
 import { TransactionCardSelect } from "./TransactionCardSelect";
-import { cardTest } from "../../types/card.mock";
 import type { TransactionType } from "./transaction.type";
+import { cardTest } from "../../types/mock";
+import { toast } from "sonner";
 
 type DialogProps = {
   open: boolean;
@@ -16,13 +17,14 @@ export function TransactionForm({ open, onClose, formType }: DialogProps) {
 
   const onSubmitForm = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Submitting form with values:", { amount, cardId });
+
     onClose();
+
+    toast.success(`${formType} of $${amount} submitted successfully!`);
   };
 
   const onCancelForm = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    console.log("Form closed");
     onClose();
   };
 

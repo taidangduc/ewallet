@@ -32,12 +32,20 @@ services.AddIdentity<User, IdentityRole<Guid>>(options =>
 .AddEntityFrameworkStores<IdentityDbContext>()
 .AddDefaultTokenProviders();
 
-// OpenAPI
-services.AddSwaggerDocumentation("EWallet.Identity", "v1");
+builder.Services.AddCustomJwtAuthentication(appSettings.Jwt);
+
+services.AddAuthorization();
 
 builder.Services.AddControllers();
 
+services.AddSwaggerDocumentation("EWallet.Identity", "v1");
+
+services.AddExceptionHandler<GlobalExceptionHandler>();
+services.AddProblemDetails();
+
 // Configure DI
+services.AddHttpContextAccessor();
+services.AddScoped<ICurrentWebUser, CurrentWebUser>();
 services.AddScoped<IdentityDbContextSeed>();
 services.AddScoped<IIdentityService, IdentityService>();
 services.AddScoped<IJwtProvider, JwtProvider>();
@@ -48,16 +56,16 @@ services.AddHttpClient<IWalletService, WalletService>(options =>
     options.BaseAddress = new Uri(appSettings.Services.Wallet.BaseUrl);
 });
 
-builder.Services.AddCustomJwtAuthentication(appSettings.Jwt);
-services.AddAuthorization();
-
 var app = builder.Build();
 
 app.UseSwaggerDocumentation("EWallet.Identity", "v1");
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.MapControllers();
 
 // Migrate and seed database

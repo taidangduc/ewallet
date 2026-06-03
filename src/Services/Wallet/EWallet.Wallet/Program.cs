@@ -19,6 +19,9 @@ configuration.Bind(appSettings);
 
 services.Configure<AppSettings>(configuration);
 
+// Database
+builder.AddCustomDbContext<WalletDbContext>(appSettings.ConnectionStrings.DefaultConnection);
+
 // CORS
 services.AddCors(options =>
 {
@@ -35,10 +38,15 @@ services.AddCors(options =>
 
 // Authentication
 services.AddCustomJwtAuthentication(appSettings.Jwt);
+
 services.AddAuthorization();
 
-// Database
-builder.AddCustomDbContext<WalletDbContext>(appSettings.ConnectionStrings.DefaultConnection);
+builder.Services.AddControllers();
+
+services.AddSwaggerDocumentation("EWallet", "v1");
+
+services.AddExceptionHandler<GlobalExceptionHandler>();
+services.AddProblemDetails();
 
 // Configure DI
 services.AddScoped<IUnitOfWork, WalletDbContext>();
@@ -50,16 +58,8 @@ services.AddScoped<WalletService>();
 services.AddScoped<IWalletService, WalletService>();
 services.AddScoped<ITransactionService, TransactionService>();
 services.AddScoped<IPaymentGateway, PaymentGateway>();
-
 services.AddHttpContextAccessor();
 services.AddScoped<ICurrentWebUser, CurrentWebUser>();
-
-services.AddExceptionHandler<GlobalExceptionHandler>();
-services.AddProblemDetails();
-
-builder.Services.AddControllers();
-
-services.AddSwaggerDocumentation("EWallet", "v1");
 
 var app = builder.Build();
 
@@ -68,8 +68,11 @@ app.UseCors(appSettings.CORS.AllowAnyOrigin ? "AllowOrigin" : "AllowOrigins");
 app.UseSwaggerDocumentation("EWallet", "v1");
 
 app.UseExceptionHandler();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.MapControllers();
 
 // Migrate database

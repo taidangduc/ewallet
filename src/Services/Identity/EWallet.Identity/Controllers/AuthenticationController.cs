@@ -1,3 +1,6 @@
+using EWallet.Common.Exceptions;
+using EWallet.Common.Web;
+using EWallet.Identity.DTOs;
 using EWallet.Identity.Entities;
 using EWallet.Identity.Models;
 using EWallet.Identity.Services;
@@ -14,12 +17,14 @@ public class AuthenticationController : ControllerBase
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
     private readonly IIdentityService _identityService;
+    private readonly ICurrentWebUser _currentWebUser;
 
-    public AuthenticationController(UserManager<User> userManager, SignInManager<User> signInManager, IIdentityService identityService)
+    public AuthenticationController(UserManager<User> userManager, SignInManager<User> signInManager, IIdentityService identityService, ICurrentWebUser currentWebUser)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _identityService = identityService;
+        _currentWebUser = currentWebUser;
     }
 
     [HttpGet, Authorize]
@@ -27,7 +32,29 @@ public class AuthenticationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Get()
     {
-        return Ok("Authenticated");
+        var userId = _currentWebUser.UserId;
+
+        if (Guid.Empty.Equals(userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+        if (user == null)
+        {
+            return Unauthorized();
+        }
+
+        var roles = _userManager.GetRolesAsync(user).Result.ToList();
+
+        var userDto = new UserDTO
+        {
+            Id = userId,
+            Username = user.UserName,
+            Roles = roles
+        };
+
+        return Ok(userDto);
     }
 
     [HttpPost, AllowAnonymous]
@@ -36,13 +63,13 @@ public class AuthenticationController : ControllerBase
         var user = await _userManager.FindByNameAsync(request.Username);
         if (user == null)
         {
-            return Unauthorized();
+            return BadRequest("User not found");
         }
 
         var result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
         if (!result.Succeeded)
         {
-            return Unauthorized();
+            return BadRequest("Invalid username or password");
         }
         var authenticationModel = await _identityService.AuthenticateAsync(request);
 

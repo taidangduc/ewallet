@@ -27,8 +27,8 @@ services.AddCors(options =>
         .AllowAnyHeader());
 });
 
-// Authentication
 builder.Services.AddCustomJwtAuthentication(appSettings.Jwt);
+
 builder.Services.AddAuthorization();
 
 // Ocelot
@@ -39,9 +39,10 @@ var app = builder.Build();
 
 app.UseCors(appSettings.CORS.AllowAnyOrigin ? "AllowOrigin" : "AllowOrigins");
 
-await app.UseOcelot();
-
 app.UseAuthentication();
+
 app.UseAuthorization();
+
+await app.UseOcelot();
 
 app.Run();

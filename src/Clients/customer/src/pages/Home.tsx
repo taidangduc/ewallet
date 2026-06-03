@@ -7,7 +7,7 @@ import { TransactionCard } from "../features/transaction/TransactionCard";
 import { TransactionHeader } from "../features/transaction/TransactionHeader";
 import { WalletBalance } from "../features/wallet/WalletBalance";
 import { WalletCard } from "../features/wallet/WalletCard";
-import { cardTest } from "../types/card.mock";
+import { cardTest } from "../types/mock";
 
 export function HomePage() {
   const transactionTest: TransactionDTO[] = [

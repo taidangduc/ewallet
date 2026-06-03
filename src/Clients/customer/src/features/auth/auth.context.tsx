@@ -1,23 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
+import type { UserDTO } from "./auth.type";
+import { useTokenStorage } from "../../hooks/useTokenStorage";
+import { getUserInfo } from "./auth.service";
 
 // ref: https://www.w3schools.com/typescript/typescript_react.php
 const AuthContext = React.createContext<{
-  user: string | null;
-  setUser: React.Dispatch<React.SetStateAction<string | null>>;
-  login: () => Promise<void>;
-  isAuthenticated: boolean;
+  user: UserDTO | null;
+  setUser: React.Dispatch<React.SetStateAction<UserDTO | null>>;
+  loading: boolean;
 } | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = React.useState<string | null>(null);
+  const [user, setUser] = React.useState<UserDTO | null>(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
 
-  const login = async (): Promise<void> => {
-    window.location.href = "/";
-  };
+  const { getToken, clearToken } = useTokenStorage();
+
+  useEffect(() => {
+    const func = async () => {
+      try {
+        const token = getToken();
+        if (!token) {
+          return;
+        }
+
+        // delay for testing loading state
+        await new Promise((x) => setTimeout(x, 2000));
+
+        const { data } = await getUserInfo();
+        setUser(data);
+      } catch (error) {
+        clearToken();
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    func();
+  }, []);
 
   const ctx = React.useMemo(
-    () => ({ user, setUser, login, isAuthenticated: !!user }),
-    [user],
+    () => ({
+      user,
+      setUser,
+      loading,
+    }),
+    [user, setUser, loading],
   );
 
   return <AuthContext.Provider value={ctx}>{children}</AuthContext.Provider>;
