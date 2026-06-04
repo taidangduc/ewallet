@@ -60,6 +60,8 @@ var app = builder.Build();
 
 app.UseSwaggerDocumentation("EWallet.Identity", "v1");
 
+app.UseExceptionHandler();
+
 //app.UseHttpsRedirection();
 
 app.UseAuthentication();

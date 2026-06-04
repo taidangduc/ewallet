@@ -63,13 +63,13 @@ public class AuthenticationController : ControllerBase
         var user = await _userManager.FindByNameAsync(request.Username);
         if (user == null)
         {
-            return BadRequest("User not found");
+            throw new NotFoundException("User not found");
         }
 
         var result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
         if (!result.Succeeded)
         {
-            return BadRequest("Invalid username or password");
+            throw new ValidationException("Invalid username or password");
         }
         var authenticationModel = await _identityService.AuthenticateAsync(request);
 
