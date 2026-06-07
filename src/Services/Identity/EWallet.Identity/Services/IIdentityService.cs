@@ -1,8 +1,9 @@
-using EWallet.Identity.Models;
+using EWallet.Identity.DTOs;
 
 namespace EWallet.Identity.Services;
 
 public interface IIdentityService
 {
-    Task<AuthenticationModel> AuthenticateAsync(LoginModel model);
+    Task<UserDTO> GetUserAsync(Guid userId);
+    Task<string> AuthenticateAsync(string username, string password);
 }

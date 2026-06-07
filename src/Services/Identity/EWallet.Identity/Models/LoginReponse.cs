@@ -1,6 +1,6 @@
 namespace EWallet.Identity.Models;
 
-public class AuthenticationModel
+public class LoginResponse
 {
     public string AccessToken { get; set; }
 }

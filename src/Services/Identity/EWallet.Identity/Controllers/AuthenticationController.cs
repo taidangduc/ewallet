@@ -1,11 +1,7 @@
-using EWallet.Common.Exceptions;
 using EWallet.Common.Web;
-using EWallet.Identity.DTOs;
-using EWallet.Identity.Entities;
 using EWallet.Identity.Models;
 using EWallet.Identity.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EWallet.Identity.Controllers;
@@ -14,15 +10,11 @@ namespace EWallet.Identity.Controllers;
 [Route("api/[controller]")]
 public class AuthenticationController : ControllerBase
 {
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
     private readonly IIdentityService _identityService;
     private readonly ICurrentWebUser _currentWebUser;
 
-    public AuthenticationController(UserManager<User> userManager, SignInManager<User> signInManager, IIdentityService identityService, ICurrentWebUser currentWebUser)
+    public AuthenticationController(IIdentityService identityService, ICurrentWebUser currentWebUser)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
         _identityService = identityService;
         _currentWebUser = currentWebUser;
     }
@@ -34,45 +26,26 @@ public class AuthenticationController : ControllerBase
     {
         var userId = _currentWebUser.UserId;
 
-        if (Guid.Empty.Equals(userId))
+        if (Guid.Empty.Equals(userId) || userId == null)
         {
             return Unauthorized();
         }
 
-        var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
-        if (user == null)
-        {
-            return Unauthorized();
-        }
+        var response = _identityService.GetUserAsync(userId).Result;
 
-        var roles = _userManager.GetRolesAsync(user).Result.ToList();
-
-        var userDto = new UserDTO
-        {
-            Id = userId,
-            Username = user.UserName,
-            Roles = roles
-        };
-
-        return Ok(userDto);
+        return Ok(response);
     }
 
     [HttpPost, AllowAnonymous]
-    public async Task<IActionResult> Login([FromBody] LoginModel request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var user = await _userManager.FindByNameAsync(request.Username);
-        if (user == null)
-        {
-            throw new NotFoundException("User not found");
-        }
+        var authenticate = await _identityService.AuthenticateAsync(request.Username, request.Password);
 
-        var result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
-        if (!result.Succeeded)
+        var response = new LoginResponse
         {
-            throw new ValidationException("Invalid username or password");
-        }
-        var authenticationModel = await _identityService.AuthenticateAsync(request);
+            AccessToken = authenticate
+        };
 
-        return Ok(authenticationModel);
+        return Ok(response);
     }
 }

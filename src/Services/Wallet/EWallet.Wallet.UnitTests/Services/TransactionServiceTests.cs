@@ -53,6 +53,7 @@ public class TransactionServiceTests
     {
         // Arrange
         var walletId = Guid.NewGuid();
+
         var transactions = new List<Entities.Transaction>
         {
             new Entities.Transaction
@@ -93,18 +94,21 @@ public class TransactionServiceTests
     public async Task CreateTransactionAsync_WhenDepositSucceed_ShouldCreateTransaction()
     {
         // Arrange
+        var userId = Guid.NewGuid();
         var walletId = Guid.NewGuid();
-        var model = new TransactionModel
+
+        var model = new CreateTransactionModel
         {
-            WalletId = walletId,
+            UserId = userId,
             Type = Entities.TransactionType.Deposit,
             Amount = 100,
-            CardNumber = "424242424242424242"
+            CardId = "token_98765abcdef"
         };
 
         var wallet = new Entities.Wallet
         {
             Id = walletId,
+            UserId = userId,
             Balance = 0
         };
 
@@ -131,18 +135,21 @@ public class TransactionServiceTests
     public async Task CreateTransactionAsync_WhenChargeFailed_ShouldThrowException()
     {
         // Arrange
+        var userId = Guid.NewGuid();
         var walletId = Guid.NewGuid();
-        var model = new TransactionModel
+
+        var model = new CreateTransactionModel
         {
-            WalletId = walletId,
+            UserId = userId,
             Type = Entities.TransactionType.Deposit,
             Amount = 100,
-            CardNumber = "400000000000000002"
+            CardId = "token_12345abcdef"
         };
 
         var wallet = new Entities.Wallet
         {
             Id = walletId,
+            UserId = userId,
             Balance = 0
         };
 
@@ -167,10 +174,12 @@ public class TransactionServiceTests
     public async Task CreateTransactionAsync_WhenInsufficientBalance_ShouldThrowException()
     {
         // Arrange
+        var userId = Guid.NewGuid();
         var walletId = Guid.NewGuid();
-        var model = new TransactionModel
+
+        var model = new CreateTransactionModel
         {
-            WalletId = walletId,
+            UserId = userId,
             Type = Entities.TransactionType.Withdraw,
             Amount = 100
         };
@@ -178,6 +187,7 @@ public class TransactionServiceTests
         var wallet = new Entities.Wallet
         {
             Id = walletId,
+            UserId = userId,
             Balance = 50
         };
 

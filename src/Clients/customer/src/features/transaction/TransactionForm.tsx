@@ -15,21 +15,16 @@ export function TransactionForm({ open, onClose, formType }: DialogProps) {
   const [cardId, setCardId] = React.useState<string>(cardTest[0].id);
   const [amount, setAmount] = React.useState(100);
 
-  const onSubmitForm = (event: React.FormEvent) => {
+  const handleSubmitForm = (event: React.FormEvent) => {
     event.preventDefault();
 
-    onClose();
-
     toast.success(`${formType} of $${amount} submitted successfully!`);
-  };
 
-  const onCancelForm = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
     onClose();
   };
 
   return (
-    <form className="flex flex-col" onSubmit={onSubmitForm}>
+    <form className="flex flex-col" onSubmit={handleSubmitForm}>
       <h1 className="text-2xl font-medium">{formType}</h1>
       <TransactionAmount amount={amount} currency="USD" onChange={setAmount} />
       <TransactionCardSelect
@@ -47,7 +42,7 @@ export function TransactionForm({ open, onClose, formType }: DialogProps) {
         <button
           className="flex-1 bg-white outline outline-gray-300 text-black px-4 py-2 mt-4"
           type="button"
-          onClick={onCancelForm}
+          onClick={onClose}
         >
           Cancel
         </button>

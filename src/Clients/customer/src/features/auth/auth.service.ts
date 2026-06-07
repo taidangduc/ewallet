@@ -1,10 +1,10 @@
 import { apiClient } from "../../lib/api-client";
-import type { AuthenticationModel, LoginModel, UserDTO } from "./auth.type";
+import type { LoginResponse, LoginRequest, User } from "./auth.type";
 
-export const login = (data: LoginModel) => {
-  return apiClient.post<AuthenticationModel>(`/Authentication`, data);
+export const login = (data: LoginRequest) => {
+  return apiClient.post<LoginResponse>(`/Authentication`, data);
 };
 
 export const getUserInfo = () => {
-  return apiClient.get<UserDTO>(`/Authentication`);
+  return apiClient.get<User>(`/Authentication`);
 };

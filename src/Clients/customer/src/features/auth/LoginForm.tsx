@@ -4,12 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export function LoginForm() {
+  /*
+   * You can move logic in LoginPage if this component is reused in other places,
+   * or page is orchestrate logic and components receive props,
+   * @example:
+   * <LoginForm onSubmit={handleSubmit} loading={loading} error={error} />
+   * <LoginForm onSuccess={() => navigate("/")} />
+   * but for now, I think it's better to keep it here since it's only used in LoginPage
+   */
   const { signIn, loading } = useLogin();
   const navigate = useNavigate();
 
   const [error, setError] = useState<string | null>(null);
 
-  const onHandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
@@ -27,7 +35,7 @@ export function LoginForm() {
   return (
     <div>
       {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
-      <form className="space-y-4" onSubmit={onHandleSubmit}>
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <label className="block text-md">Username</label>
           <input

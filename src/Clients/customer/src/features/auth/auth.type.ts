@@ -1,13 +1,13 @@
-export type AuthenticationModel = {
+export type LoginResponse = {
   accessToken: string;
 };
 
-export type LoginModel = {
+export type LoginRequest = {
   username: string;
   password: string;
 };
 
-export type UserDTO = {
+export type User = {
   id: string;
   username: string;
   roles: string[];

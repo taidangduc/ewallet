@@ -1,10 +1,10 @@
-import type { TransactionDTO, TransactionModel } from "./transaction.type";
+import type { Transaction, TransactionRequest } from "./transaction.type";
 import { apiClient } from "../../lib/api-client";
 
-export const createTransaction = (data: TransactionModel) => {
-  return apiClient.post<TransactionDTO>(`/Transaction`, data);
+export const createTransaction = (data: TransactionRequest) => {
+  return apiClient.post<Transaction>(`/Transaction`, data);
 };
 
 export const getTransactions = () => {
-  return apiClient.get<TransactionDTO[]>(`/Transaction`);
+  return apiClient.get<Transaction[]>(`/Transaction`);
 };

@@ -11,7 +11,7 @@ export function TransactionHeader() {
     undefined,
   );
 
-  const onOpenDialog = (type: TransactionType) => {
+  const handleOpenDialog = (type: TransactionType) => {
     setState(true);
     setFormType(type);
   };
@@ -21,7 +21,7 @@ export function TransactionHeader() {
       <div className="flex">
         <button
           className="flex-1 bg-blue-500 text-white px-4 py-2 outline-1 outline-gray-300"
-          onClick={() => onOpenDialog(TransactionType.WITHDRAW)}
+          onClick={() => handleOpenDialog(TransactionType.WITHDRAW)}
         >
           <div className="flex items-center justify-center">
             <img src={arrowDownLeft} alt="Arrow Down Left" />
@@ -30,7 +30,7 @@ export function TransactionHeader() {
         </button>
         <button
           className="flex-1 bg-white text-black px-4 py-2 ml-4 outline outline-1 outline-gray-300"
-          onClick={() => onOpenDialog(TransactionType.DEPOSIT)}
+          onClick={() => handleOpenDialog(TransactionType.DEPOSIT)}
         >
           <div className="flex items-center justify-center">
             <img src={arrowUpRight} alt="Arrow Up Right" />

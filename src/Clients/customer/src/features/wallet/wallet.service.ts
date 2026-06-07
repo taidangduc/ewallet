@@ -1,6 +1,6 @@
 import { apiClient } from "../../lib/api-client";
-import type { WalletDTO } from "./wallet.type";
+import type { Wallet } from "./wallet.type";
 
 export const getWallet = () => {
-  return apiClient.get<WalletDTO>(`/Wallet`);
+  return apiClient.get<Wallet>(`/Wallet`);
 };

@@ -39,9 +39,10 @@ public class WalletController : ControllerBase
     [HttpPost, Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Create([FromBody] CreateWalletModel model)
+    public async Task<IActionResult> Create([FromBody] CreateWalletRequest request)
     {
-        await _walletService.CreateWalletAsync(model);
+        await _walletService.CreateWalletAsync(request);
+
         return Ok();
     }
 }

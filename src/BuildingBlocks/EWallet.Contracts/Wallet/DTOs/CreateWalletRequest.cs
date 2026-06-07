@@ -1,6 +1,6 @@
 namespace EWallet.Contracts;
 
-public class CreateWalletModel
+public class CreateWalletRequest
 {
     public Guid UserId { get; set; }
 }

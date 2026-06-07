@@ -18,7 +18,7 @@ public class WalletService : IWalletService
     // Note:
     // Wallet create while creating user, called by Identity Service.
     // Here I set the default currency to "USD", you can change it.
-    public async Task CreateWalletAsync(CreateWalletModel model)
+    public async Task CreateWalletAsync(CreateWalletRequest model)
     {
         var existingWallet = await _walletRepository.GetQueryable().AnyAsync(x => x.UserId == model.UserId);
         if (existingWallet)

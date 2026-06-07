@@ -1,9 +1,7 @@
+using EWallet.Common.Web;
 using EWallet.Identity.Controllers;
-using EWallet.Identity.Entities;
 using EWallet.Identity.Models;
 using EWallet.Identity.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -13,68 +11,46 @@ namespace EWallet.Identity.UnitTests.Controllers;
 //ref: https://samueleresca.net/unit-testing-asp-net-core-identity/
 public class AuthenticationControllerTests
 {
-    private readonly Mock<UserManager<User>> _userManagerMock;
-    private readonly Mock<SignInManager<User>> _signInManagerMock;
     private readonly Mock<IIdentityService> _identityServiceMock;
     private readonly AuthenticationController _controller;
+    private readonly Mock<ICurrentWebUser> _currentWebUserMock;
 
     public AuthenticationControllerTests()
     {
-        _userManagerMock = new Mock<UserManager<User>>(
-            new Mock<IUserStore<User>>().Object,
-            null, null, null, null, null, null, null, null);
-
-        _signInManagerMock = new Mock<SignInManager<User>>(
-            _userManagerMock.Object,
-            new Mock<HttpContextAccessor>().Object,
-            new Mock<IUserClaimsPrincipalFactory<User>>().Object,
-            null, null, null, null);
-
         _identityServiceMock = new Mock<IIdentityService>();
+        _currentWebUserMock = new Mock<ICurrentWebUser>();
 
-        _controller = new AuthenticationController(_userManagerMock.Object, _signInManagerMock.Object, _identityServiceMock.Object);
+        _controller = new AuthenticationController(_identityServiceMock.Object, _currentWebUserMock.Object);
     }
 
     [Fact]
     public async Task Login_WhenUserValid_ShouldReturnToken()
     {
         // Arrange
-        var loginModel = new LoginModel
+        var loginRequest = new LoginRequest
         {
             Username = "peter",
             Password = "password123"
         };
 
-        var user = new User
+        string fakeToken = "fake-jwt-token";
+
+        var loginResponse = new LoginResponse
         {
-            Id = Guid.NewGuid(),
-            UserName = loginModel.Username
+            AccessToken = fakeToken
         };
-
-        var authModel = new AuthenticationModel
-        {
-            AccessToken = "fake-jwt-token"
-        };
-
-        _userManagerMock
-            .Setup(x => x.FindByNameAsync(loginModel.Username))
-            .ReturnsAsync(user);
-
-        _signInManagerMock
-            .Setup(x => x.PasswordSignInAsync(user, loginModel.Password, false, false))
-            .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
 
         _identityServiceMock
-            .Setup(x => x.AuthenticateAsync(loginModel))
-            .ReturnsAsync(authModel);
+            .Setup(x => x.AuthenticateAsync(loginRequest.Username, loginRequest.Password))
+            .ReturnsAsync(fakeToken);
 
         // Act
-        var response = await _controller.Login(loginModel);
+        var response = await _controller.Login(loginRequest);
 
         // Assert
         var result = Assert.IsType<OkObjectResult>(response);
-        var model = Assert.IsType<AuthenticationModel>(result.Value);
+        var model = Assert.IsType<LoginResponse>(result.Value);
 
-        Assert.Equal(authModel.AccessToken, model.AccessToken);
+        Assert.Equal(fakeToken, model.AccessToken);
     }
 }

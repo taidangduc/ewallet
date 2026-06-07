@@ -1,7 +1,7 @@
 import { HeaderLayout } from "../components/layout/Header";
 import {
   TransactionType,
-  type TransactionDTO,
+  type Transaction,
 } from "../features/transaction/transaction.type";
 import { TransactionCard } from "../features/transaction/TransactionCard";
 import { TransactionHeader } from "../features/transaction/TransactionHeader";
@@ -10,7 +10,8 @@ import { WalletCard } from "../features/wallet/WalletCard";
 import { cardTest } from "../types/mock";
 
 export function HomePage() {
-  const transactionTest: TransactionDTO[] = [
+
+  const transactionTest: Transaction[] = [
     {
       id: "1",
       walletId: "wallet1",

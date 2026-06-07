@@ -8,12 +8,14 @@ public class PaymentGateway : IPaymentGateway
         {
             Id = "token_98765abcdef",
             CardNumber = "4242424242424242",
+            Last4 = "4242",
             Status = PaymentStatus.Success
         },
         new()
         {
             Id = "token_12345abcdef",
             CardNumber = "4000000000000002",
+            Last4 = "0002",
             Status = PaymentStatus.Failed
         }
     ];
@@ -22,18 +24,18 @@ public class PaymentGateway : IPaymentGateway
     public async Task<PaymentResponse> ChargeAsync(PaymentRequest request)
     {
         await Task.Delay(500);
-        return ProcessPayment(request.CardNumber);
+        return ProcessPayment(request.CardId);
     }
 
     public async Task<PaymentResponse> PayoutAsync(PayoutRequest request)
     {
         await Task.Delay(500);
-        return ProcessPayment(request.CardNumber);
+        return ProcessPayment(request.CardId);
     }
 
-    private PaymentResponse ProcessPayment(string cardNumber)
+    private PaymentResponse ProcessPayment(string cardId)
     {
-        var testCard = _testCards.FirstOrDefault(c => c.CardNumber == cardNumber);
+        var testCard = _testCards.FirstOrDefault(c => c.Id == cardId);
 
         if (testCard == null)
         {

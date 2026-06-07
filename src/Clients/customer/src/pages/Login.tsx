@@ -14,7 +14,7 @@ export function LoginPage() {
         <h2 className="text-center text-md mb-3">
           Enter your credentials to access your account.
         </h2>
-        <LoginForm />
+        <LoginForm/>
       </div>
     </div>
   );

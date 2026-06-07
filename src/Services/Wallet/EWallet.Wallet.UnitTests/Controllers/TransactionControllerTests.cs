@@ -26,18 +26,17 @@ public class TransactionControllerTests
     public async Task CreateTransaction_WhenAmountIsZero_ShouldThenReturnBadRequest()
     {
         // Arrange
-        var request = new TransactionModel
+        var request = new CreateTransactionRequest
         {
-            WalletId = Guid.NewGuid(),
             Amount = 0,
             Type = Entities.TransactionType.Deposit,
-            CardNumber = "4242424242424242"
+            CardId = "token_12345abcdef"
         };
 
         // Act
         var result = await _controller.Create(request);
 
         // Assert
-        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.IsType<BadRequestResult>(result);
     }
 }

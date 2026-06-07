@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
-import type { UserDTO } from "./auth.type";
+import type { User } from "./auth.type";
 import { useTokenStorage } from "../../hooks/useTokenStorage";
 import { getUserInfo } from "./auth.service";
 
 // ref: https://www.w3schools.com/typescript/typescript_react.php
 const AuthContext = React.createContext<{
-  user: UserDTO | null;
-  setUser: React.Dispatch<React.SetStateAction<UserDTO | null>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
   loading: boolean;
 } | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = React.useState<UserDTO | null>(null);
+  const [user, setUser] = React.useState<User | null>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
 
   const { getToken, clearToken } = useTokenStorage();

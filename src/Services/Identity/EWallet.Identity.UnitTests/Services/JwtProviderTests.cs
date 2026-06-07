@@ -49,7 +49,7 @@ public class JwtProviderTests
         });
 
         // Act
-        var result = _jwtProvider.GenerateTokenAsync(user, roles, scopes);
+        var result = new JwtProvider(_appSettingsMock.Object).GenerateTokenAsync(user, roles, scopes);
 
         // Assert
         var tokenHandler = new JwtSecurityTokenHandler();

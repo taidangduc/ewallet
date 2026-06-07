@@ -1,4 +1,4 @@
-export type WalletDTO = {
+export type Wallet = {
   id: string;
   userId: string;
   balance: number;

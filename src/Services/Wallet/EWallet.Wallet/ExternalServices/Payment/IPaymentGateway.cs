@@ -8,12 +8,12 @@ public interface IPaymentGateway
 
 public class PaymentRequest
 {
-    public string CardNumber { get; set; }
+    public string CardId { get; set; }
 }
 
 public class PayoutRequest
 {
-    public string CardNumber { get; set; }
+    public string CardId { get; set; }
 }
 
 public class PaymentResponse

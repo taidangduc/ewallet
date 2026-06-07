@@ -24,8 +24,15 @@ public class TransactionController : ControllerBase
     public async Task<IActionResult> Get()
     {
         var userId = _currentWebUser.UserId;
-        var transactions = await _transactionService.GetTransactionsAsync(userId);
-        return Ok(transactions);
+
+        if (Guid.Empty.Equals(userId) || userId == null)
+        {
+            return Unauthorized();
+        }
+
+        var response = await _transactionService.GetTransactionsAsync(userId);
+
+        return Ok(response);
     }
 
     // NOTE:
@@ -34,14 +41,23 @@ public class TransactionController : ControllerBase
     [HttpPost, Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] TransactionModel request)
+    public async Task<IActionResult> Create([FromBody] CreateTransactionRequest request)
     {
         if (request.Amount <= 0)
         {
-            return BadRequest("Amount must be greater than zero.");
+            return BadRequest();
         }
 
-        await _transactionService.CreateTransactionAsync(request);
-        return Ok(new { Message = "Transaction processed successfully." });
+        var model = new CreateTransactionModel
+        {
+            UserId = _currentWebUser.UserId,
+            Amount = request.Amount,
+            Type = request.Type,
+            CardId = request.CardId
+        };
+
+        await _transactionService.CreateTransactionAsync(model);
+
+        return Ok();
     }
 }

@@ -46,14 +46,14 @@ public class TransactionService : ITransactionService
         return transactions;
     }
 
-    public async Task CreateTransactionAsync(TransactionModel model)
+    public async Task CreateTransactionAsync(CreateTransactionModel model)
     {
         if (model.Amount <= 0)
         {
             throw new ValidationException("Amount must be greater than zero.");
         }
 
-        var wallet = await _walletRepository.GetQueryable().FirstOrDefaultAsync(x => x.Id == model.WalletId);
+        var wallet = await _walletRepository.GetQueryable().FirstOrDefaultAsync(x => x.UserId == model.UserId);
 
         if (wallet == null)
         {
@@ -64,7 +64,7 @@ public class TransactionService : ITransactionService
         {
             var charge = new PaymentRequest
             {
-                CardNumber = model.CardNumber
+                CardId = model.CardId
             };
 
             var response = await _paymentGateway.ChargeAsync(charge);
@@ -85,7 +85,7 @@ public class TransactionService : ITransactionService
 
             var payout = new PayoutRequest
             {
-                CardNumber = model.CardNumber
+                CardId = model.CardId
             };
 
             var response = await _paymentGateway.PayoutAsync(payout);
@@ -105,7 +105,7 @@ public class TransactionService : ITransactionService
         var transaction = new Entities.Transaction
         {
             Id = Guid.NewGuid(),
-            WalletId = model.WalletId,
+            WalletId = wallet.Id,
             Type = model.Type,
             Amount = model.Amount,
             CreatedDateTime = DateTimeOffset.UtcNow

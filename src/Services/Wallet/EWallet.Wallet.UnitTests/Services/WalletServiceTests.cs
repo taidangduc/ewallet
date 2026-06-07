@@ -56,7 +56,7 @@ public class WalletServiceTests
             }
         };
 
-        var model = new CreateWalletModel
+        var model = new CreateWalletRequest
         {
             UserId = userId
         };
@@ -95,7 +95,7 @@ public class WalletServiceTests
             }
         };
 
-        var model = new CreateWalletModel
+        var model = new CreateWalletRequest
         {
             UserId = userId
         };

@@ -1,11 +1,11 @@
-export type TransactionModel = {
+export type TransactionRequest = {
   walletId: string;
   amount: number;
   type: TransactionType;
   cardNumber: string;
 };
 
-export type TransactionDTO = {
+export type Transaction = {
   id: string;
   walletId: string;
   amount: number;

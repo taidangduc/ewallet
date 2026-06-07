@@ -68,7 +68,7 @@ public class IdentityDbContextSeed
                     {
                         new Claim("scope", Authorization.Permissions.All)
                     });
-                    await _walletService.CreateWalletAsync(new CreateWalletModel
+                    await _walletService.CreateWalletAsync(new CreateWalletRequest
                     {
                         UserId = _users.First().Id,
                     });
@@ -86,7 +86,7 @@ public class IdentityDbContextSeed
                         new Claim("scope", Authorization.Permissions.Read),
                         new Claim("scope", Authorization.Permissions.Write),
                     });
-                    await _walletService.CreateWalletAsync(new CreateWalletModel
+                    await _walletService.CreateWalletAsync(new CreateWalletRequest
                     {
                         UserId = _users.Last().Id,
                     });
