@@ -6,16 +6,18 @@ public class PaymentGateway : IPaymentGateway
     [
         new()
         {
-            Id = "token_98765abcdef",
-            CardNumber = "4242424242424242",
+            Id = "card_98765abcdef",
             Last4 = "4242",
+            CardNumber = "4242424242424242",
+            CardBrand = "Visa",
             Status = PaymentStatus.Success
         },
         new()
         {
-            Id = "token_12345abcdef",
-            CardNumber = "4000000000000002",
+            Id = "card_12345abcdef",
             Last4 = "0002",
+            CardNumber = "4000000000000002",
+            CardBrand = "MasterCard",
             Status = PaymentStatus.Failed
         }
     ];

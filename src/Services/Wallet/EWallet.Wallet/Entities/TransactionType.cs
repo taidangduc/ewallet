@@ -2,6 +2,6 @@ namespace EWallet.Wallet.Entities;
 
 public enum TransactionType
 {
-    Deposit,
-    Withdraw
+    Deposit = 1,
+    Withdraw = 2,
 }

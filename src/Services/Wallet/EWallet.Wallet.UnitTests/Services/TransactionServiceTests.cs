@@ -102,7 +102,7 @@ public class TransactionServiceTests
             UserId = userId,
             Type = Entities.TransactionType.Deposit,
             Amount = 100,
-            CardId = "token_98765abcdef"
+            CardId = "card_98765abcdef"
         };
 
         var wallet = new Entities.Wallet
@@ -143,7 +143,7 @@ public class TransactionServiceTests
             UserId = userId,
             Type = Entities.TransactionType.Deposit,
             Amount = 100,
-            CardId = "token_12345abcdef"
+            CardId = "card_12345abcdef"
         };
 
         var wallet = new Entities.Wallet

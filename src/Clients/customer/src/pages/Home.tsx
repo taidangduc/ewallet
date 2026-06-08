@@ -1,5 +1,6 @@
 import { HeaderLayout } from "../components/layout/Header";
 import {
+  TransactionStatus,
   TransactionType,
   type Transaction,
 } from "../features/transaction/transaction.type";
@@ -7,15 +8,15 @@ import { TransactionCard } from "../features/transaction/TransactionCard";
 import { TransactionHeader } from "../features/transaction/TransactionHeader";
 import { WalletBalance } from "../features/wallet/WalletBalance";
 import { WalletCard } from "../features/wallet/WalletCard";
-import { cardTest } from "../types/mock";
+import { cardTest } from "../types/card";
 
 export function HomePage() {
-
   const transactionTest: Transaction[] = [
     {
       id: "1",
       walletId: "wallet1",
       amount: 100,
+      status: TransactionStatus.SUCCESS,
       type: TransactionType.DEPOSIT,
       date: "2026/30/05 1:00 PM",
     },
@@ -23,6 +24,7 @@ export function HomePage() {
       id: "2",
       walletId: "wallet1",
       amount: 100,
+      status: TransactionStatus.FAILED,
       type: TransactionType.WITHDRAW,
       date: "2026/30/05 1:05 PM",
     },
@@ -30,7 +32,8 @@ export function HomePage() {
       id: "3",
       walletId: "wallet1",
       amount: 100,
-      type: TransactionType.ERROR,
+      status: TransactionStatus.PENDING,
+      type: TransactionType.WITHDRAW,
       date: "2026/30/05 1:09 PM",
     },
   ];
@@ -47,7 +50,7 @@ export function HomePage() {
                 key={index}
                 brand={card.brand}
                 last4={card.last4}
-                expDate={card.exp_date}
+                expDate={card.expDate}
               />
             ))}
           </div>
@@ -66,6 +69,7 @@ export function HomePage() {
                   <TransactionCard
                     key={transaction.id}
                     type={transaction.type}
+                    status={transaction.status}
                     amount={transaction.amount}
                     date={transaction.date}
                   />

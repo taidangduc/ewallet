@@ -49,7 +49,7 @@ services.AddExceptionHandler<GlobalExceptionHandler>();
 services.AddProblemDetails();
 
 // Configure DI
-services.AddScoped<IUnitOfWork, WalletDbContext>();
+services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<WalletDbContext>());
 services.AddScoped<ITransactionRepository, TransactionRepository>();
 services.AddScoped<IWalletRepository, WalletRepository>();
 services.AddScoped<IRepository<Wallet>, Repository<Wallet>>();

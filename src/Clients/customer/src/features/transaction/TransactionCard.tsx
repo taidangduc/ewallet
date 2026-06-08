@@ -1,41 +1,28 @@
-import deposit_icon from "@assets/arrow-up-right-bg-black.png";
-import withdraw_icon from "@assets/arrow-down-left-bg-black.png";
-import error_icon from "@assets/error-icon.png";
-import { TransactionType } from "./transaction.type";
+import {
+  TRANSACTION_STATUS,
+  TRANSACTION_TYPE,
+  TransactionStatus,
+  TransactionType,
+} from "./transaction.type";
+import { formatCurrency } from "../../lib/currency";
 
 type TransactionCardProps = {
   type: TransactionType;
+  status: TransactionStatus;
   amount: number;
   date: string;
 };
-export function TransactionCard({ type, amount, date }: TransactionCardProps) {
-  const { icon, label, value, color } = (() => {
-    switch (type) {
-      case TransactionType.DEPOSIT:
-        return {
-          icon: deposit_icon,
-          label: "Deposit",
-          value: `+ $${amount.toFixed(2)}`,
-          color: "text-green-500",
-        };
+export function TransactionCard({
+  type,
+  status,
+  amount,
+  date,
+}: TransactionCardProps) {
+  const { icon, label, sign } = TRANSACTION_TYPE[type];
 
-      case TransactionType.WITHDRAW:
-        return {
-          icon: withdraw_icon,
-          label: "Withdraw",
-          value: `- $${amount.toFixed(2)}`,
-          color: "text-red-500",
-        };
+  const { value, bgColor } = TRANSACTION_STATUS[status];
 
-      default:
-        return {
-          icon: error_icon,
-          label: "Error",
-          value: "NaN",
-          color: "text-black",
-        };
-    }
-  })();
+  const formatAmount = `${sign}${formatCurrency(amount)}`;
 
   return (
     <div className="p-3 my-4 border-b border-gray-300">
@@ -46,11 +33,14 @@ export function TransactionCard({ type, amount, date }: TransactionCardProps) {
           </div>
           <div>
             <h3 className="text-lg font-medium">{label}</h3>
-            <p className="text-sm text-gray-500">{date}</p>
+            <div className="flex items-center gap-2">
+              <span className={`min-w-[55px] text-[12px] text-white font-semibold py-[1px] px-[2px] text-center ${bgColor}`}>{value}</span>
+              <p className="text-sm text-gray-500">{date}</p>
+            </div>
           </div>
         </div>
-        <div>
-          <p className={`text-lg font-bold ${color}`}>{value}</p>
+        <div className="flex flex-col items-end">
+          <p className={`text-md font-bold`}>{formatAmount}</p>
         </div>
       </div>
     </div>

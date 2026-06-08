@@ -2,6 +2,7 @@ import type React from "react";
 import { useLogin } from "./useLogin";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import type { LoginRequest } from "./auth.type";
 
 export function LoginForm() {
   /*
@@ -20,12 +21,25 @@ export function LoginForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    /*
+     * You can use "React Hook Form" + "Zod" to handle form state and validation
+     * But for now, I use FormData to keep it simple
+     */
+
     const formData = new FormData(e.currentTarget);
-    const username = formData.get("username") as string;
-    const password = formData.get("password") as string;
+
+    const request: LoginRequest = {
+      username: (formData.get("username") as string) ?? "",
+      password: (formData.get("password") as string) ?? "",
+    };
+
+    if (!request.username || !request.password) {
+      setError("Username and password are required");
+      return;
+    }
 
     try {
-      await signIn({ username, password });
+      await signIn(request);
       navigate("/");
     } catch (error) {
       setError("Invalid username or password");

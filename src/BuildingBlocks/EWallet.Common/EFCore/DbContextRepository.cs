@@ -28,6 +28,7 @@ public class DbContextRepository<TContext, TEntity> : DbContext, IRepository<TEn
 
     public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
+        _dbContext.Update(entity);
         return Task.CompletedTask;
     }
 

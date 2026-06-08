@@ -1,7 +1,7 @@
 import visa_icon from "@assets/visa-icon.png";
 import mastercard_icon from "@assets/mastercard-icon.png";
 import { maskCardNumber } from "../../lib/mask-card";
-import { CardBrand } from "../../types/mock";
+import { CardBrand } from "../../types/card";
 
 type Props = {
   brand: CardBrand;

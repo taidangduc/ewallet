@@ -41,7 +41,7 @@ export function TransactionHeader() {
           <TransactionForm
             open={state}
             onClose={() => setState(false)}
-            formType={formType}
+            formType={formType!}
           />
         </Dialog>
       </div>

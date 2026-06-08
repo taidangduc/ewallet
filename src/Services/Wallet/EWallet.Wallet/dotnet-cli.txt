@@ -1,1 +1,5 @@
 dotnet ef migrations add Initial_Wallet -p src\Services\Wallet\EWallet.Wallet -c WalletDbContext -o Migrations
+
+dotnet ef migrations add Add_StatusField_In_TransactionTable -p src\Services\Wallet\EWallet.Wallet -c WalletDbContext
+
+dotnet ef database update Add_StatusField_In_TransactionTable -p src\Services\Wallet\EWallet.Wallet -c WalletDbContext

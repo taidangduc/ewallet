@@ -35,4 +35,9 @@ public class DbContextUnitOfWork<TDbContext> : DbContext, IUnitOfWork
     {
         await _transaction.CommitAsync(cancellationToken);
     }
+
+    public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        await _transaction.RollbackAsync(cancellationToken);
+    }
 }

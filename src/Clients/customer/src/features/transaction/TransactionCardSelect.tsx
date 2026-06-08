@@ -1,7 +1,7 @@
 import { maskCardNumber } from "../../lib/mask-card";
 import visa_icon from "@assets/visa-icon.png";
 import mastercard_icon from "@assets/mastercard-icon.png";
-import { CardBrand, type Card } from "../../types/mock";
+import { CardBrand, type Card } from "../../types/card";
 
 type CardSelectProps = {
   data: Card[];

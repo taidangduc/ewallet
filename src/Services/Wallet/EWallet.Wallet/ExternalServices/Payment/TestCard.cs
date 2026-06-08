@@ -5,6 +5,7 @@ public class TestCard
 {
     public string Id { get; set; }
     public string Last4 { get; set; }
+    public string CardBrand { get; set; }
     public string CardNumber { get; set; }
     public PaymentStatus Status { get; set; }
 }
