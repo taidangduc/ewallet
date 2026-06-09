@@ -1,48 +1,19 @@
 import { HeaderLayout } from "../components/layout/Header";
-import {
-  TransactionStatus,
-  TransactionType,
-  type Transaction,
-} from "../features/transaction/transaction.type";
 import { TransactionCard } from "../features/transaction/TransactionCard";
 import { TransactionHeader } from "../features/transaction/TransactionHeader";
+import { useGetTransaction } from "../features/transaction/useGetTransaction";
 import { WalletBalance } from "../features/wallet/WalletBalance";
 import { WalletCard } from "../features/wallet/WalletCard";
 import { cardTest } from "../types/card";
 
 export function HomePage() {
-  const transactionTest: Transaction[] = [
-    {
-      id: "1",
-      walletId: "wallet1",
-      amount: 100,
-      status: TransactionStatus.SUCCESS,
-      type: TransactionType.DEPOSIT,
-      date: "2026/30/05 1:00 PM",
-    },
-    {
-      id: "2",
-      walletId: "wallet1",
-      amount: 100,
-      status: TransactionStatus.FAILED,
-      type: TransactionType.WITHDRAW,
-      date: "2026/30/05 1:05 PM",
-    },
-    {
-      id: "3",
-      walletId: "wallet1",
-      amount: 100,
-      status: TransactionStatus.PENDING,
-      type: TransactionType.WITHDRAW,
-      date: "2026/30/05 1:09 PM",
-    },
-  ];
+  const { transactions } = useGetTransaction();
 
   return (
     <>
       <HeaderLayout />
       <div className="max-w-6xl m-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 p-4  ">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 p-4">
           <div className="lg:col-span-4">
             <h1 className="text-2xl font-medium pb-3">Wallet</h1>
             {cardTest.map((card, index) => (
@@ -60,20 +31,24 @@ export function HomePage() {
             <div className="pt-2">
               <div className="flex items-center justify-between border-b border-gray-300 my-4">
                 <h2 className="text-2xl font-medium">Transactions</h2>
-                <a href="" className="text-blue-500 underline">
+                <a href="/" className="tracking-wide text-blue-500 underline">
                   See all
                 </a>
               </div>
               <div>
-                {transactionTest.map((transaction) => (
-                  <TransactionCard
-                    key={transaction.id}
-                    type={transaction.type}
-                    status={transaction.status}
-                    amount={transaction.amount}
-                    date={transaction.date}
-                  />
-                ))}
+                {transactions.length > 0 ? (
+                  transactions.map((transaction) => (
+                    <TransactionCard
+                      key={transaction.id}
+                      type={transaction.type}
+                      status={transaction.status}
+                      amount={transaction.amount}
+                      date={transaction.createdDateTime}
+                    />
+                  ))
+                ) : (
+                  <p className="text-sm text-center">Not found data.</p>
+                )}
               </div>
             </div>
           </div>

@@ -3,3 +3,10 @@
 
 ## Solution Structure
 <img src="/docs/imgs/solution-structure.png">
+
+## Demo
+#### Homepage
+<img src="/docs/imgs/home-page.png">
+
+#### Loginpage
+<img src="/docs/imgs/login-page.png">

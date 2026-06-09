@@ -1,6 +1,5 @@
 import deposit_icon from "@assets/arrow-up-right-bg-black.png";
 import withdraw_icon from "@assets/arrow-down-left-bg-black.png";
-import error_icon from "@assets/error-icon.png";
 
 export type TransactionRequest = {
   amount: number;
@@ -11,11 +10,11 @@ export type TransactionRequest = {
 export type Transaction = {
   id: string;
   walletId: string;
-  amount: number;
   type: TransactionType;
   status: TransactionStatus;
+  amount: number;
   description?: string;
-  date: string;
+  createdDateTime: string;
 };
 
 export enum TransactionType {
@@ -77,3 +76,33 @@ export const TRANSACTION_TYPE: Record<TransactionType, TransactionTypeValue> = {
     textColor: "text-red-500",
   },
 };
+
+/*
+ * Test data for transactions
+ */
+const transactionTest: Transaction[] = [
+  {
+    id: "1",
+    walletId: "wallet1",
+    amount: 100,
+    status: TransactionStatus.SUCCESS,
+    type: TransactionType.DEPOSIT,
+    createdDateTime: "2026/30/05 1:00 PM",
+  },
+  {
+    id: "2",
+    walletId: "wallet1",
+    amount: 100,
+    status: TransactionStatus.FAILED,
+    type: TransactionType.WITHDRAW,
+    createdDateTime: "2026/30/05 1:05 PM",
+  },
+  {
+    id: "3",
+    walletId: "wallet1",
+    amount: 100,
+    status: TransactionStatus.PENDING,
+    type: TransactionType.WITHDRAW,
+    createdDateTime: "2026/30/05 1:09 PM",
+  },
+];

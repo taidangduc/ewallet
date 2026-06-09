@@ -1,6 +1,5 @@
 import visa_icon from "@assets/visa-icon.png";
 import mastercard_icon from "@assets/mastercard-icon.png";
-import { maskCardNumber } from "../../lib/mask-card";
 import { CardBrand } from "../../types/card";
 
 type Props = {
@@ -32,14 +31,26 @@ export function WalletCard(data: Props) {
   };
 
   return (
-    <div className="outline outline-1 outline-gray-300 p-6 flex flex-col items-start my-4">
-      <img
-        src={getCardIcon().icon}
-        alt={`${data.brand} Icon`}
-        className="h-6 w-auto mb-2"
-      />
-      <div className="text-lg">{maskCardNumber(data.last4)}</div>
-      <div className="text-sm">Exp Date: {data.expDate}</div>
+    <div className="relative h-52 my-4 overflow-hidden text-white p-6 bg-gradient-to-br from-gray-500 via-slate-400 to-gray-900">
+      <div className="absolute -bottom-12 -left-12 h-40 w-40 rounded-full bg-white/10" />
+      <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10" />
+
+      <div className="relative flex h-full flex-col">
+        <div className="flex justify-end">
+          <img src={getCardIcon().icon} alt={data.brand} className="h-8" />
+        </div>
+
+        <div className="mt-auto">
+          <div className="mb-4 text-2xl tracking-widest">
+            **** **** **** {data.last4}
+          </div>
+
+          <div className="flex justify-between text-sm text-white/90">
+            <span>{data.brand}</span>
+            <span>Exp {data.expDate}</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

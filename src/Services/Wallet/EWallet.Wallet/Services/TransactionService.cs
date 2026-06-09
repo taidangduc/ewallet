@@ -27,10 +27,19 @@ public class TransactionService : ITransactionService
         _paymentGateway = paymentGateway;
     }
 
-    public async Task<List<TransactionDTO>> GetTransactionsAsync(Guid walletId)
+    public async Task<List<TransactionDTO>> GetTransactionsAsync(Guid userId)
     {
+        var wallet = await _walletRepository.GetQueryable().FirstOrDefaultAsync(x => x.UserId == userId);
+
+        if (wallet == null)
+        {
+            throw new NotFoundException("Wallet not found.");
+        }
+
         var transactions = await _transactionRepository.GetQueryable()
-            .Where(x => x.WalletId == walletId)
+            .Where(x => x.WalletId == wallet.Id)
+            .OrderByDescending(x => x.CreatedDateTime)
+            .Take(5)
             .Select(x => new TransactionDTO
             {
                 Id = x.Id,

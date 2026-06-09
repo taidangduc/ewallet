@@ -5,7 +5,7 @@ namespace EWallet.Wallet.Services;
 
 public interface ITransactionService
 {
-    Task<List<TransactionDTO>> GetTransactionsAsync(Guid walletId);
+    Task<List<TransactionDTO>> GetTransactionsAsync(Guid userId);
     Task CreateTransactionAsync(CreateTransactionModel model);
 }
 
