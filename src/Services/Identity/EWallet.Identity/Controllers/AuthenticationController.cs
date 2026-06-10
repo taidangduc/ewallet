@@ -22,7 +22,7 @@ public class AuthenticationController : ControllerBase
     [HttpGet, Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
         var userId = _currentWebUser.UserId;
 
@@ -31,7 +31,7 @@ public class AuthenticationController : ControllerBase
             return Unauthorized();
         }
 
-        var response = _identityService.GetUserAsync(userId).Result;
+        var response = await _identityService.GetUserAsync(userId);
 
         return Ok(response);
     }

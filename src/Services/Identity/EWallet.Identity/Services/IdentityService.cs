@@ -2,6 +2,7 @@ using EWallet.Common.Exceptions;
 using EWallet.Identity.DTOs;
 using EWallet.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace EWallet.Identity.Services;
 
@@ -18,24 +19,22 @@ public class IdentityService : IIdentityService
         _jwtProvider = jwtProvider;
     }
 
-    public Task<UserDTO> GetUserAsync(Guid userId)
+    public async Task<UserDTO> GetUserAsync(Guid userId)
     {
-        var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
         if (user == null)
         {
             throw new NotFoundException("User not found");
         }
 
-        var roles = _userManager.GetRolesAsync(user).Result.ToList();
-
         var userDto = new UserDTO
         {
-            Id = userId,
+            Id = user.Id,
             Username = user.UserName,
-            Roles = roles
+            Roles = (await _userManager.GetRolesAsync(user)).ToList()
         };
 
-        return Task.FromResult(userDto);
+        return userDto;
     }
 
     public async Task<string> AuthenticateAsync(string username, string password)
