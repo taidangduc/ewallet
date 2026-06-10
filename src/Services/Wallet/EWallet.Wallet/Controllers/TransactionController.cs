@@ -58,6 +58,6 @@ public class TransactionController : ControllerBase
 
         await _transactionService.CreateTransactionAsync(model);
 
-        return Ok();
+        return Created();
     }
 }
