@@ -1,4 +1,4 @@
-namespace EWallet.Wallet.Controllers;
+namespace EWallet.Wallet.DTOs;
 
 public class WalletDTO
 {

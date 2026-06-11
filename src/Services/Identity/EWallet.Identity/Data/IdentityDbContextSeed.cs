@@ -10,7 +10,7 @@ public class IdentityDbContextSeed
 {
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-    private readonly IWalletService _walletService;
+    private readonly IWalletClient _walletService;
     private readonly IEnumerable<User> _users =
     [
         new()
@@ -29,7 +29,7 @@ public class IdentityDbContextSeed
         }
     ];
 
-    public IdentityDbContextSeed(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager, IWalletService walletService)
+    public IdentityDbContextSeed(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager, IWalletClient walletService)
     {
         _userManager = userManager;
         _roleManager = roleManager;

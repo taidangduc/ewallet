@@ -1,6 +1,6 @@
 using EWallet.Common.Exceptions;
 using EWallet.Contracts;
-using EWallet.Wallet.Controllers;
+using EWallet.Wallet.DTOs;
 using EWallet.Wallet.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,11 +26,12 @@ public class WalletService : IWalletService
             throw new ValidationException($"Wallet for user {model.UserId} already exists.");
         }
 
+        // Set initial wallet balance (for testing purposes), you can change it as needed.
         var wallet = new Entities.Wallet
         {
             Id = Guid.NewGuid(),
             UserId = model.UserId,
-            Balance = 0,
+            Balance = 1000000,
             Currency = "USD",
             CreatedDateTime = DateTimeOffset.UtcNow
         };

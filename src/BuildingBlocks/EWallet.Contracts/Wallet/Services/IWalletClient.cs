@@ -1,6 +1,6 @@
 namespace EWallet.Contracts;
 
-public interface IWalletService
+public interface IWalletClient
 {
     Task CreateWalletAsync(CreateWalletRequest model);
 }

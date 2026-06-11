@@ -3,12 +3,11 @@ using EWallet.Contracts;
 namespace EWallet.Identity.Services;
 
 //ref: https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient
-public class WalletService : IWalletService
+public class WalletClient : IWalletClient
 {
     private readonly HttpClient _httpClient;
 
-
-    public WalletService(HttpClient httpClient)
+    public WalletClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }

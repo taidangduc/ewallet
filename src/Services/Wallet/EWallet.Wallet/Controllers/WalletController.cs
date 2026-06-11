@@ -10,10 +10,10 @@ namespace EWallet.Wallet.Controllers;
 [Route("api/[controller]")]
 public class WalletController : ControllerBase
 {
-    private readonly WalletService _walletService;
+    private readonly IWalletService _walletService;
     private readonly ICurrentWebUser _currentWebUser;
 
-    public WalletController(WalletService walletService, ICurrentWebUser currentWebUser)
+    public WalletController(IWalletService walletService, ICurrentWebUser currentWebUser)
     {
         _walletService = walletService;
         _currentWebUser = currentWebUser;

@@ -51,7 +51,7 @@ services.AddScoped<IIdentityService, IdentityService>();
 services.AddScoped<IJwtProvider, JwtProvider>();
 
 // Configure HttpClient
-services.AddHttpClient<IWalletService, WalletService>(options =>
+services.AddHttpClient<IWalletClient, WalletClient>(options =>
 {
     options.BaseAddress = new Uri(appSettings.Services.Wallet.BaseUrl);
 });
