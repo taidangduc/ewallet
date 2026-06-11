@@ -54,7 +54,6 @@ services.AddScoped<ITransactionRepository, TransactionRepository>();
 services.AddScoped<IWalletRepository, WalletRepository>();
 services.AddScoped<IRepository<Wallet>, Repository<Wallet>>();
 services.AddScoped<IRepository<Transaction>, Repository<Transaction>>();
-services.AddScoped<WalletService>();
 services.AddScoped<IWalletService, WalletService>();
 services.AddScoped<ITransactionService, TransactionService>();
 services.AddScoped<IPaymentGateway, PaymentGateway>();
