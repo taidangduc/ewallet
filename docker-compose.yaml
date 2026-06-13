@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  db:
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    
+  wallet-service:
+    image: ewallet.wallet
+    build:
+      context: .
+      dockerfile: src/Services/Wallet/EWallet.Wallet/Dockerfile
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__DefaultConnection: Server=db;Database=EWallet.Wallet;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+      Jwt__Authority: http://identity-service:8080
+    
+  identity-service:
+    image: ewallet.identity
+    build:
+      context: .
+      dockerfile: src/Services/Identity/EWallet.Identity/Dockerfile
+    depends_on:
+      - db
+      - wallet-service
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__DefaultConnection: Server=db;Database=EWallet.Identity;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+      Services__Wallet__BaseUrl: http://wallet-service:8080
+      Jwt__Authority: http://identity-service:8080
+
+  api-gateway:
+    image: ewallet.apigateway
+    build:
+      context: .
+      dockerfile: src/Gateways/EWallet.Gateways.WebAPI/Dockerfile
+    ports:
+      - "9000:8080"
+    depends_on:
+      - identity-service
+      - wallet-service
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      Jwt__Authority: http://identity-service:8080

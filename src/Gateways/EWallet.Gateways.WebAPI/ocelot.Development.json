@@ -8,8 +8,8 @@
             "DownstreamPathTemplate": "/api/Authentication/{everything}",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "identity-service",
-                    "Port": 8080
+                    "Host": "localhost",
+                    "Port": 6002
                 }
             ]
         },
@@ -20,10 +20,10 @@
             "DownstreamPathTemplate": "/api/Wallet/{everything}",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "wallet-service",
-                    "Port": 8080
+                    "Host": "localhost",
+                    "Port": 6001
                 }
-            ]
+            ]  
         },
         {
             "UpstreamPathTemplate": "/api/Transaction/{everything}",
@@ -32,10 +32,10 @@
             "DownstreamPathTemplate": "/api/Transaction/{everything}",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "wallet-service",
-                    "Port": 8080
+                    "Host": "localhost",
+                    "Port": 6001
                 }
-            ]  
+            ] 
         }
     ]
 }

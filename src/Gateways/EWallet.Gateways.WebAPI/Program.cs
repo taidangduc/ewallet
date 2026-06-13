@@ -22,9 +22,9 @@ services.AddCors(options =>
         .AllowAnyHeader());
 
     options.AddPolicy("AllowOrigin", builder => builder
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
 
 builder.Services.AddCustomJwtAuthentication(appSettings.Jwt);
@@ -32,7 +32,9 @@ builder.Services.AddCustomJwtAuthentication(appSettings.Jwt);
 builder.Services.AddAuthorization();
 
 // Ocelot
-builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+builder.Configuration
+.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
+.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 builder.Services.AddOcelot(builder.Configuration);
 
 var app = builder.Build();

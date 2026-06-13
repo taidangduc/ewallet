@@ -3,7 +3,7 @@ import { useTokenStorage } from "../hooks/useTokenStorage";
 import { toast } from "sonner";
 
 export const apiClient = axios.create({
-  baseURL: "https://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },

@@ -1,0 +1,3 @@
+docker build -f src/Services/Identity/EWallet.Identity/Dockerfile -t ewallet.identity .
+
+docker run -d -p 8080:8080 --name ewallet.identity ewallet.identity

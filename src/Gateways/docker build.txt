@@ -1,0 +1,3 @@
+docker build -f src/Gateways/EWallet.Gateways.WebAPI/Dockerfile -t ewallet.apigateway .
+
+docker run -d -p 8080:8080 --name ewallet.apigateway ewallet.apigateway
