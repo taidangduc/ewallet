@@ -1,9 +1,8 @@
 using EWallet.Common.Web;
 using EWallet.Gateways.WebAPI.ConfigurationOptions;
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
 
 //ref: https://code-maze.com/aspnetcore-api-gateway-with-ocelot
+//ref: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/yarp/config-files?view=aspnetcore-10.0
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -31,11 +30,8 @@ builder.Services.AddCustomJwtAuthentication(appSettings.Jwt);
 
 builder.Services.AddAuthorization();
 
-// Ocelot
-builder.Configuration
-.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
-.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
-builder.Services.AddOcelot(builder.Configuration);
+builder.Services.AddReverseProxy()
+    .LoadFromConfig(configuration.GetSection("Yarp"));
 
 var app = builder.Build();
 
@@ -45,6 +41,6 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-await app.UseOcelot();
+app.MapReverseProxy();
 
 app.Run();

@@ -47,3 +47,6 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       Jwt__Authority: http://identity-service:8080
+      Yarp__Clusters__Identity__Destinations__destination1__Address: http://identity-service:8080
+      Yarp__Clusters__Wallet__Destinations__destination1__Address: http://wallet-service:8080
+      Yarp__Clusters__Transaction__Destinations__destination1__Address: http://wallet-service:8080
