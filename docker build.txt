@@ -15,6 +15,6 @@ docker tag ewallet.identity taidangduc/ewallet.identity
 docker push taidangduc/ewallet.identity
 
 ---- Run ----
-docker-compose -f docker-compose.yaml up -d --build
+docker-compose -f docker-compose.yaml up -d
 
 docker-compose down
