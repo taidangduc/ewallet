@@ -27,7 +27,6 @@ services:
       dockerfile: src/Services/Identity/EWallet.Identity/Dockerfile
     depends_on:
       - db
-      - wallet-service
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       ConnectionStrings__DefaultConnection: Server=db;Database=EWallet.Identity;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
@@ -42,8 +41,7 @@ services:
     ports:
       - "9000:8080"
     depends_on:
-      - identity-service
-      - wallet-service
+      - db
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       Jwt__Authority: http://identity-service:8080

@@ -31,7 +31,7 @@ public class WalletService : IWalletService
         {
             Id = Guid.NewGuid(),
             UserId = model.UserId,
-            Balance = 1000000,
+            Balance = 0,
             Currency = "USD",
             CreatedDateTime = DateTimeOffset.UtcNow
         };
@@ -40,14 +40,14 @@ public class WalletService : IWalletService
         await _walletRepository.UnitOfWork.SaveChangesAsync();
     }
 
-    public Task<WalletDTO?> GetWalletAsync(Guid userId)
+    public async Task<WalletDTO?> GetWalletAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        return _walletRepository.GetQueryable().Select(x => new WalletDTO
+        return await _walletRepository.GetQueryable().Select(x => new WalletDTO
         {
             Id = x.Id,
             UserId = x.UserId,
             Balance = x.Balance,
             Currency = x.Currency,
-        }).FirstOrDefaultAsync(x => x.UserId == userId);
+        }).FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
     }
 }

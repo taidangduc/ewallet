@@ -54,6 +54,7 @@ services.AddScoped<ITransactionRepository, TransactionRepository>();
 services.AddScoped<IWalletRepository, WalletRepository>();
 services.AddScoped<IRepository<Wallet>, Repository<Wallet>>();
 services.AddScoped<IRepository<Transaction>, Repository<Transaction>>();
+services.AddScoped<WalletDbContextSeed>();
 services.AddScoped<IWalletClient, WalletService>();
 services.AddScoped<IWalletService, WalletService>();
 services.AddScoped<ITransactionService, TransactionService>();
@@ -80,6 +81,9 @@ using (var scope = app.Services.CreateScope())
 {
     var database = scope.ServiceProvider.GetRequiredService<WalletDbContext>();
     await database.Database.MigrateAsync();
+
+    var seeder = scope.ServiceProvider.GetRequiredService<WalletDbContextSeed>();
+    await seeder.SeedAsync();
 }
 
 app.Run();

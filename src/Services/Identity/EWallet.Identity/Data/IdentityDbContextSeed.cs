@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using EWallet.Contracts;
 using EWallet.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,30 +9,28 @@ public class IdentityDbContextSeed
 {
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-    private readonly IWalletClient _walletService;
     private readonly IEnumerable<User> _users =
     [
         new()
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.Parse("10000000-0000-0000-0000-000000000001"),
             UserName = "admin",
             Email = "admin@example.com",
             SecurityStamp = Guid.NewGuid().ToString(),
         },
         new()
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.Parse("10000000-0000-0000-0000-000000000002"),
             UserName = "user",
             Email = "user@example.com",
             SecurityStamp = Guid.NewGuid().ToString(),
         }
     ];
 
-    public IdentityDbContextSeed(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager, IWalletClient walletService)
+    public IdentityDbContextSeed(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
-        _walletService = walletService;
     }
 
     public async Task SeedAsync()
@@ -68,10 +65,6 @@ public class IdentityDbContextSeed
                     {
                         new Claim("scope", Authorization.Permissions.All)
                     });
-                    await _walletService.CreateWalletAsync(new CreateWalletRequest
-                    {
-                        UserId = _users.First().Id,
-                    });
                 }
             }
 
@@ -85,10 +78,6 @@ public class IdentityDbContextSeed
                     {
                         new Claim("scope", Authorization.Permissions.Read),
                         new Claim("scope", Authorization.Permissions.Write),
-                    });
-                    await _walletService.CreateWalletAsync(new CreateWalletRequest
-                    {
-                        UserId = _users.Last().Id,
                     });
                 }
             }

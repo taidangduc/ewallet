@@ -28,7 +28,7 @@ public class WalletController : ControllerBase
 
         if (Guid.Empty.Equals(userId) || userId == null)
         {
-            return Unauthorized();
+            throw new UnauthorizedAccessException();
         }
 
         var wallet = await _walletService.GetWalletAsync(userId);
@@ -36,13 +36,13 @@ public class WalletController : ControllerBase
         return Ok(wallet);
     }
 
-    [HttpPost, AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpPost, Authorize]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Create([FromBody] CreateWalletRequest request)
     {
         await _walletService.CreateWalletAsync(request);
 
-        return Ok();
+        return Created();
     }
 }

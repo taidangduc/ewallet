@@ -28,7 +28,7 @@ public class AuthenticationController : ControllerBase
 
         if (Guid.Empty.Equals(userId) || userId == null)
         {
-            return Unauthorized();
+            throw new UnauthorizedAccessException();
         }
 
         var response = await _identityService.GetUserAsync(userId);

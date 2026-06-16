@@ -27,7 +27,7 @@ public class TransactionController : ControllerBase
 
         if (Guid.Empty.Equals(userId) || userId == null)
         {
-            return Unauthorized();
+            throw new UnauthorizedAccessException();
         }
 
         var response = await _transactionService.GetTransactionsAsync(userId);
@@ -39,7 +39,7 @@ public class TransactionController : ControllerBase
     // You can separate 2 endpoints "Deposit" "+" and "Withdraw" "-"
     // Here, with demo purpose, I just use one endpoint for both operations
     [HttpPost, Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateTransactionRequest request)
     {

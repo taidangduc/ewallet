@@ -8,4 +8,5 @@ public class Wallet
     public string Currency { get; set; }
     public DateTimeOffset CreatedDateTime { get; set; }
     public DateTimeOffset? UpdatedDateTime { get; set; }
+    public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }
