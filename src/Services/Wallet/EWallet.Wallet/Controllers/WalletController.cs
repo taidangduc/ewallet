@@ -36,7 +36,10 @@ public class WalletController : ControllerBase
         return Ok(wallet);
     }
 
-    [HttpPost, Authorize]
+    /*
+    * This endpoint is for testing purpose only.
+    */
+    [HttpPost, AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Create([FromBody] CreateWalletRequest request)

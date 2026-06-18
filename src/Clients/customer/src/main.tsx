@@ -7,15 +7,24 @@ import { NotFoundPage } from "./pages/NotFound.tsx";
 import { createBrowserRouter } from "react-router-dom";
 import { LoginPage } from "./pages/Login.tsx";
 import { AuthGuard } from "./features/auth/AuthGuard.tsx";
+import { RegisterPage } from "./pages/Register.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <AuthGuard><HomePage /></AuthGuard>,
+    element: (
+      <AuthGuard>
+        <HomePage />
+      </AuthGuard>
+    ),
   },
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
   },
   {
     path: "*",

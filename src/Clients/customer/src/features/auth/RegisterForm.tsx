@@ -1,41 +1,34 @@
 import type React from "react";
-import { useLogin } from "./useLogin";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import type { LoginRequest } from "./auth.type";
+import type { RegisterRequest } from "./auth.type";
+import { useRegister } from "./useRegister";
 import { TextField } from "../../components/ui/TextField";
 
 type FieldError = {
   username?: string;
+  email?: string;
   password?: string;
 };
 
-export function LoginForm() {
-  /*
-   * You can move logic in LoginPage if this component is reused in other places,
-   * or page is orchestrate logic and components receive props,
-   * @example:
-   * <LoginForm onSubmit={handleSubmit} loading={loading} error={error} />
-   * <LoginForm onSuccess={() => navigate("/")} />
-   * but for now, I think it's better to keep it here since it's only used in LoginPage
-   */
-  const { signIn, loading, error } = useLogin();
+/*
+ * In this component, I just validate empty fields
+ * You can use library react-hook-form, zod or any library you want to validate form data
+ */
+
+export function RegisterForm() {
+  const { signUp, loading, error } = useRegister();
   const navigate = useNavigate();
 
   const [fieldError, setFieldError] = useState<FieldError>({});
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    /*
-     * You can use "React Hook Form" + "Zod" to handle form state and validation
-     * But for now, I use FormData to keep it simple
-     */
-
     const formData = new FormData(e.currentTarget);
 
-    const request: LoginRequest = {
+    const request: RegisterRequest = {
       username: (formData.get("username") as string) ?? "",
+      email: (formData.get("email") as string) ?? "",
       password: (formData.get("password") as string) ?? "",
     };
 
@@ -43,6 +36,10 @@ export function LoginForm() {
 
     if (!request.username.trim()) {
       errors.username = "This field is required";
+    }
+
+    if (!request.email.trim()) {
+      errors.email = "This field is required";
     }
 
     if (!request.password.trim()) {
@@ -56,14 +53,16 @@ export function LoginForm() {
     }
 
     try {
-      await signIn(request);
-      navigate("/");
+      await signUp(request);
+      navigate("/login");
     } catch {}
   };
 
   return (
     <div>
-      {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
+      {error ? (
+        <div className="mb-4 text-red-500 text-center">{error}</div>
+      ) : null}
       <form className="space-y-4" onSubmit={handleSubmit}>
         <TextField
           label="Username"
@@ -72,22 +71,25 @@ export function LoginForm() {
           errorMessage={fieldError.username}
         />
         <TextField
+          label="Email"
+          name="email"
+          type="email"
+          placeholder="Enter your email"
+          errorMessage={fieldError.email}
+        />
+        <TextField
           label="Password"
           name="password"
           type="password"
           placeholder="Enter your password"
           errorMessage={fieldError.password}
         />
-
-        <div className="text-sm text-gray-500">
-          Tips: For testing, you can use user/User@123
-        </div>
         <button
           type="submit"
           disabled={loading}
-          className={`w-full text-white py-2 px-4  ${loading ? "cursor-not-allowed bg-blue-100" : "cursor-pointer bg-blue-500"}`}
+          className={`w-full text-white py-2 px-4 mt-2 ${loading ? "cursor-not-allowed bg-blue-100" : "cursor-pointer bg-blue-500"}`}
         >
-          Sign in
+          Sign up
         </button>
       </form>
     </div>

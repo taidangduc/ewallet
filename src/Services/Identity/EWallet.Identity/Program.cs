@@ -26,7 +26,7 @@ services.AddIdentity<User, IdentityRole<Guid>>(options =>
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 6;
 })
 .AddEntityFrameworkStores<IdentityDbContext>()

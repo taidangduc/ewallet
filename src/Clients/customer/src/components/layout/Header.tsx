@@ -5,7 +5,7 @@ import { useLogout } from "../../features/auth/useLogout";
 
 export function HeaderLayout() {
   const { user, isAuthenticated } = useSession();
-  const { logout } = useLogout();
+  const { signOut } = useLogout();
 
   return (
     <header className="bg-blue-500 shadow py-4 mb-2">
@@ -19,7 +19,7 @@ export function HeaderLayout() {
             <div>
               <span className="text-white">{user?.username}</span>
               <span className="border-l-1 border-white mx-2 "></span>
-              <button onClick={logout} className="text-white cursor-pointer">
+              <button onClick={signOut} className="text-white cursor-pointer">
                 Logout
               </button>
             </div>

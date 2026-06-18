@@ -5,10 +5,10 @@ export function useLogout() {
   const { setUser } = useAuth();
   const { clearToken } = useTokenStorage();
 
-  const logout = () => {
+  const signOut = () => {
     clearToken();
     setUser(null);
   };
 
-  return { logout };
+  return { signOut };
 }

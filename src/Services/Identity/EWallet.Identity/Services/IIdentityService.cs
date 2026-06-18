@@ -6,4 +6,5 @@ public interface IIdentityService
 {
     Task<UserDTO> GetUserAsync(Guid userId);
     Task<string> AuthenticateAsync(string username, string password);
+    Task CreateUserAsync(string username, string email, string password);
 }

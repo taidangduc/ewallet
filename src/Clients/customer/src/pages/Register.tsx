@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import { LoginForm } from "../features/auth/LoginForm";
 import wallet_logo from "@assets/wallet-blue.png";
+import { RegisterForm } from "../features/auth/RegisterForm";
+import { Link } from "react-router-dom";
 
-export function LoginPage() {
+export function RegisterPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-5 shadow-lg">
@@ -10,14 +10,14 @@ export function LoginPage() {
           <img src={wallet_logo} alt="Wallet Logo" className="h-15" />
         </div>
         <h2 className="text-center text-xl font-bold mb-3">
-          Sign in to your account
+          Sign up for a new account
         </h2>
         <h2 className="text-center text-md mb-3">
-          Enter your credentials to access your account.
+          Enter your credentials to create your account.
         </h2>
-        <LoginForm/>
+        <RegisterForm />
         <div className="text-center mt-3 text-sm">
-          Don't have an account? <Link to="/register" className="text-blue-500">Sign up</Link>    
+          Already have an account? <Link to="/login" className="text-blue-500">Sign in</Link>
         </div>
       </div>
     </div>

@@ -37,6 +37,8 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost, AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var authenticate = await _identityService.AuthenticateAsync(request.Username, request.Password);
@@ -47,5 +49,15 @@ public class AuthenticationController : ControllerBase
         };
 
         return Ok(response);
+    }
+
+    [HttpPost("register"), AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    {
+        await _identityService.CreateUserAsync(request.Username, request.Email, request.Password);
+
+        return Ok();
     }
 }
