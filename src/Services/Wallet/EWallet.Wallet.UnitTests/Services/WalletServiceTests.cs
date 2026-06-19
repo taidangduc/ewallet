@@ -3,7 +3,6 @@ using EWallet.Common.Exceptions;
 using EWallet.Contracts;
 using EWallet.Wallet.Repositories;
 using EWallet.Wallet.Services;
-using Microsoft.AspNetCore.Http.Features;
 using MockQueryable.Moq;
 using Moq;
 
