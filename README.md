@@ -4,10 +4,12 @@
 
 ## Solution Structure
 
-- Backend
+Backend
+
   <img src="/docs/imgs/solution-structure.png">
 
-- Frontend
+Frontend
+
   <img src="/docs/imgs/fe-solution-structure.png">
 
 ## Demo
