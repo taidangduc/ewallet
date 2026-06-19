@@ -26,7 +26,7 @@
 
 ## How to run and build
 
-Note: If you want to deploy project, let's you update docker-compose.yaml, variable environment.
+Note: If you want to deploy project, let's you update docker-compose.yaml,  environment variables.
 
 1. Clone
 
