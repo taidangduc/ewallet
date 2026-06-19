@@ -1,9 +1,7 @@
 import { formatCurrency } from "../../lib/currency";
-import { useGetWallet } from "./useGetWallet";
+import type { Wallet } from "./wallet.type";
 
-export function WalletBalance() {
-  const { wallet } = useGetWallet();
-
+export function WalletBalance({ wallet }: { wallet: Wallet | null }) {
   return (
     <>
       <div className="flex items-center justify-between mb-6">

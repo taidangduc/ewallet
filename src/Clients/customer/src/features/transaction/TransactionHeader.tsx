@@ -5,7 +5,11 @@ import React from "react";
 import { TransactionForm } from "./TransactionForm";
 import { TransactionType } from "./transaction.type";
 
-export function TransactionHeader() {
+export function TransactionHeader({
+  onTransactionCreated,
+}: {
+  onTransactionCreated: () => void;
+}) {
   const [state, setState] = React.useState<boolean>(false);
   const [formType, setFormType] = React.useState<TransactionType | undefined>(
     undefined,
@@ -37,14 +41,15 @@ export function TransactionHeader() {
             <span className="text-lg">Deposit</span>
           </div>
         </button>
-        <Dialog open={state} onClose={() => {}}>
-          <TransactionForm
-            open={state}
-            onClose={() => setState(false)}
-            formType={formType!}
-          />
-        </Dialog>
       </div>
+      <Dialog open={state} onClose={() => {}}>
+        <TransactionForm
+          open={state}
+          onClose={() => setState(false)}
+          onRefresh={onTransactionCreated}
+          formType={formType!}
+        />
+      </Dialog>
     </>
   );
 }

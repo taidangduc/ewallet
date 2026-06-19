@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { getToken, clearToken } = useTokenStorage();
 
   useEffect(() => {
-    const func = async () => {
+    const fetchUser = async () => {
       try {
         const token = getToken();
         if (!token) {
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    func();
+    fetchUser();
   }, []);
 
   const ctx = React.useMemo(

@@ -1,13 +1,24 @@
+import { toast } from "sonner";
 import { HeaderLayout } from "../components/layout/Header";
 import { TransactionCard } from "../features/transaction/TransactionCard";
 import { TransactionHeader } from "../features/transaction/TransactionHeader";
 import { useGetTransaction } from "../features/transaction/useGetTransaction";
+import { useGetWallet } from "../features/wallet/useGetWallet";
 import { WalletBalance } from "../features/wallet/WalletBalance";
 import { WalletCard } from "../features/wallet/WalletCard";
 import { cardTest } from "../types/card";
 
 export function HomePage() {
-  const { transactions } = useGetTransaction();
+  const { wallet, refresh: refreshWallet } = useGetWallet();
+  const { transactions, refresh: refreshTransactions } = useGetTransaction();
+
+  const handleRefresh = async () => {
+    try {
+      await Promise.all([refreshWallet(), refreshTransactions()]);
+    } catch {
+      toast.error("Failed to refresh data. Please try again later.");
+    }
+  };
 
   return (
     <>
@@ -26,14 +37,11 @@ export function HomePage() {
             ))}
           </div>
           <div className="lg:col-span-8">
-            <WalletBalance />
-            <TransactionHeader />
+            <WalletBalance wallet={wallet} />
+            <TransactionHeader onTransactionCreated={handleRefresh} />
             <div className="pt-2">
               <div className="flex items-center justify-between border-b border-gray-300 my-4">
                 <h2 className="text-2xl font-medium">Transactions</h2>
-                <a href="/" className="tracking-wide text-blue-500 underline">
-                  See all
-                </a>
               </div>
               <div>
                 {transactions.length > 0 ? (

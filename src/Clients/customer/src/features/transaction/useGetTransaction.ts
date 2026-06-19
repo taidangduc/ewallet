@@ -18,10 +18,10 @@ export function useGetTransaction() {
     }
   };
 
-  const refresh = () => {
+  const refresh = async () => {
     setLoading(true);
     setError(null);
-    fetch();
+    await fetch();
   };
 
   React.useEffect(() => {

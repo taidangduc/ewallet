@@ -95,7 +95,7 @@ public class TransactionService : ITransactionService
 
             await _unitOfWork.SaveChangesAsync();
 
-            throw new Exception($"Payment processing failed: {response.Message}");
+            throw new Exception($"Payment processing: {response.Message}");
         }
 
         if (model.Type == TransactionType.Deposit)

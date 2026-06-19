@@ -14,10 +14,16 @@ import { getErrorMessage } from "../../lib/problem-details";
 type DialogProps = {
   open: boolean;
   onClose: () => void;
+  onRefresh: () => void;
   formType: TransactionType;
 };
 
-export function TransactionForm({ open, onClose, formType }: DialogProps) {
+export function TransactionForm({
+  open,
+  onClose,
+  onRefresh,
+  formType,
+}: DialogProps) {
   const { cardId, setCardId, amount, setAmount, create, loading } =
     useCreateTransaction();
 
@@ -53,6 +59,8 @@ export function TransactionForm({ open, onClose, formType }: DialogProps) {
       onClose();
     } catch (err) {
       toast.error(getErrorMessage(err));
+    } finally {
+      await onRefresh();
     }
   };
 
