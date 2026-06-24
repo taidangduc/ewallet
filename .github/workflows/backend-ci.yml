@@ -11,9 +11,13 @@ on:
         type: boolean
         required: true
         default: true
-        
+      version:
+        description: Set Version
+        type: string
+        required: true
 jobs:
   ci:
+    name: CI pipeline
     runs-on: ubuntu-latest
 
     steps:
@@ -25,11 +29,56 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Restore solution
+      - name: Restore Solution
         run: dotnet restore EWallet.slnx
 
-      - name: Build solution
+      - name: Build Solution
         run: dotnet build EWallet.slnx --configuration Release --no-restore
 
-      - name: Run tests (ALL projects)
+      - name: Run Tests (ALL projects)
         run: dotnet test EWallet.slnx --configuration Release --no-build
+
+  publish:
+    name: Publish artifact
+    if: >-
+       github.event_name == 'workflow_dispatch' && github.event.inputs.publish == 'true'
+    runs-on: ubuntu-latest
+    needs:
+      - ci
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: action/checkout@v4
+
+      - name: Build Image
+        run: docker compose build
+
+      - name: Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Tag Image
+        run: |
+          VERSION = ${{ github.event.inputs.version || 'latest' }}
+          
+          docker tag ewallet-apigateway ghcr.io/${{ github.repository_owner }}/ewallet-apigateway:$VERSION
+          docker tag ewallet-wallet ghcr.io/${{ github.repository_owner }}/ewallet-wallet:$VERSION
+          docker tag ewallet-identity ghcr.io/${{ github.repository_owner }}/ewallet-identity:$VERSION
+      
+      - name: Push Image
+        run:
+          VERSION = ${{ github.event.inputs.version || 'latest' }}
+
+          docker push ghcr.io/${{github.repository_owner}}/ewallet-apigateway:$VERSION
+          docker push ghcr.io/${{github.repository_owner}}/ewallet-wallet:$VERSION
+          docker push ghcr.io/${{github.repository_owner}}/ewallet-identity:$VERSION
+          
+          
+    
