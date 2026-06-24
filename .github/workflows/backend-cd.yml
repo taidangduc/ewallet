@@ -1,9 +1,7 @@
-name: Deploy to VPS
+name: EWallet CD (Backend)
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   deploy:
