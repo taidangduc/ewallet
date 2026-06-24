@@ -14,7 +14,7 @@ on:
       version:
         description: Set Version
         type: string
-        required: false
+        required: true
 jobs:
   ci:
     name: CI pipeline
@@ -66,20 +66,17 @@ jobs:
 
       - name: Tag Image
         run: |
-          VERSION ="${{ github.event.inputs.version || 'latest' }}"
-          echo "version=${{ github.event.inputs.version }}"
           
-          docker tag ewallet.apigateway ghcr.io/${{ github.repository_owner }}/ewallet.apigateway:$VERSION
-          docker tag ewallet.wallet ghcr.io/${{ github.repository_owner }}/ewallet.wallet:$VERSION
-          docker tag ewallet.identity ghcr.io/${{ github.repository_owner }}/ewallet.identity:$VERSION
+          docker tag ewallet.apigateway ghcr.io/${{ github.repository_owner }}/ewallet.apigateway:${{github.event.inputs.version}}
+          docker tag ewallet.wallet ghcr.io/${{ github.repository_owner }}/ewallet.wallet:${{github.event.inputs.version}}
+          docker tag ewallet.identity ghcr.io/${{ github.repository_owner }}/ewallet.identity:${{github.event.inputs.version}}
       
       - name: Push Image
         run: |
-          VERSION ="${{ github.event.inputs.version || 'latest' }}"
 
-          docker push ghcr.io/${{github.repository_owner}}/ewallet.apigateway:$VERSION
-          docker push ghcr.io/${{github.repository_owner}}/ewallet.wallet:$VERSION
-          docker push ghcr.io/${{github.repository_owner}}/ewallet.identity:$VERSION
+          docker push ghcr.io/${{github.repository_owner}}/ewallet.apigateway:${{github.event.inputs.version}}
+          docker push ghcr.io/${{github.repository_owner}}/ewallet.wallet:${{github.event.inputs.version}}
+          docker push ghcr.io/${{github.repository_owner}}/ewallet.identity:${{github.event.inputs.version}}
           
           
     
