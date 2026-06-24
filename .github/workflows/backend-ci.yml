@@ -14,7 +14,7 @@ on:
       version:
         description: Set Version
         type: string
-        required: true
+        required: false
 jobs:
   ci:
     name: CI pipeline
@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: action/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Build Image
         run: docker compose build
@@ -66,15 +66,15 @@ jobs:
 
       - name: Tag Image
         run: |
-          VERSION = ${{ github.event.inputs.version || 'latest' }}
+          VERSION = "${{ github.event.inputs.version || 'latest' }}"
           
           docker tag ewallet-apigateway ghcr.io/${{ github.repository_owner }}/ewallet-apigateway:$VERSION
           docker tag ewallet-wallet ghcr.io/${{ github.repository_owner }}/ewallet-wallet:$VERSION
           docker tag ewallet-identity ghcr.io/${{ github.repository_owner }}/ewallet-identity:$VERSION
       
       - name: Push Image
-        run:
-          VERSION = ${{ github.event.inputs.version || 'latest' }}
+        run: |
+          VERSION = "${{ github.event.inputs.version || 'latest' }}"
 
           docker push ghcr.io/${{github.repository_owner}}/ewallet-apigateway:$VERSION
           docker push ghcr.io/${{github.repository_owner}}/ewallet-wallet:$VERSION
