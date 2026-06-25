@@ -7,10 +7,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: src/Clients/customer
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,6 +19,7 @@ jobs:
           cache-dependency-path: src/Clients/customer/package-lock.json
 
       - name: Install Dependencies
+        working-directory: src/Clients/customer
         run: npm ci
 
       - name: Install Vercel CLI
