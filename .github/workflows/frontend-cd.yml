@@ -7,6 +7,10 @@ on:
         description: The environment to deploy to
         required: true
         type: environment
+       backend_url:
+         description: The backend application URL for CORS
+         required: true
+         type: string
 
 jobs:
   deploy:
@@ -45,6 +49,8 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Build Project
+        env:
+          VITE_API_URL: ${{inputs.backend_url}}
         run: |
           vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
